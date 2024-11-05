@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "187892323856",
+    "project_id": "cinelog-853bf",
+    "storage_bucket": "cinelog-853bf.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:187892323856:android:ca021f4b8800a92c6bdc95",
+        "android_client_info": {
+          "package_name": "com.example.cinelog"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBl7XLdMlSRkqfwHIRb2ShcgUv_uEUIxug"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
