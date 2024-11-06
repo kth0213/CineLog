@@ -38,8 +38,7 @@ public class LogInActivity extends AppCompatActivity {
 
         TextView signUpButton = binding.signUp;
         signUpButton.setOnClickListener(view -> {
-//            String email = emailEditText.getText().toString();
-//            String password = passwordEditText.getText().toString();
+
 
             Intent intent = new Intent(this, SignUpActivity.class);
 //            intent.putExtra("EMAIL", email);
