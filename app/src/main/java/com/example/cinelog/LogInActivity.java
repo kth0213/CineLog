@@ -42,8 +42,6 @@ public class LogInActivity extends AppCompatActivity {
 //            String password = passwordEditText.getText().toString();
 
             Intent intent = new Intent(this, SignUpActivity.class);
-//            intent.putExtra("EMAIL", email);
-//            intent.putExtra("PASSWORD", password);
 
             startActivity(intent);
         });
