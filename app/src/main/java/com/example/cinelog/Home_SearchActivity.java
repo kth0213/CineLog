@@ -2,6 +2,7 @@ package com.example.cinelog;
 
 import android.content.Context;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -42,7 +43,6 @@ public class Home_SearchActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         SearchView searchView = binding.searchView;
-
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
@@ -91,6 +91,14 @@ public class Home_SearchActivity extends AppCompatActivity {
             Glide.with(context)   // 그릴드 이용해서 영화 포스터 이미지 띄우기
                     .load(movie.getPosterUrl())
                     .into(holder.posterImageView);
+            ImageView movieButton = holder.itemView.findViewById(R.id.movie_button);
+            movieButton.setOnClickListener(view ->{
+                Toast.makeText(context,"추가되었습니다.",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, RatingActivity.class);
+                intent.putExtra("title",movie.getTitle());
+                intent.putExtra("posterUrl",movie.getPosterUrl());
+                startActivity(intent);
+            });
         }
 
         @Override
