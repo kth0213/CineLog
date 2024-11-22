@@ -13,6 +13,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.bumptech.glide.Glide;
 import com.example.cinelog.databinding.ActivityRatingBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -33,6 +34,14 @@ public class RatingActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+
+        Intent intent = getIntent();
+        String title = intent.getStringExtra("title");
+        String posterUrl = intent.getStringExtra("posterUrl");
+        Glide.with(binding.poster.getContext())
+                .load(posterUrl)
+                .into(binding.poster);
+        binding.title.setText(title);
 
         RatingBar ratingBar = binding.ratingbar;
         EditText commentEditText = binding.comment;
@@ -65,8 +74,8 @@ public class RatingActivity extends AppCompatActivity {
                     .addOnSuccessListener(aVoid -> Log.d("Firestore", "Data saved successfully"))
                     .addOnFailureListener(e -> Log.w("Firestore", "Error saving data", e));
 
-            Intent intent = new Intent(this, RatingListActivity.class);
-            startActivity(intent);
+            Intent intentToRatingList = new Intent(this, RatingListActivity.class);
+            startActivity(intentToRatingList);
         });
     }
 }
