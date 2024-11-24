@@ -7,11 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.bumptech.glide.Glide;
 import com.example.cinelog.databinding.ActivityRatingBinding;
@@ -62,6 +58,8 @@ public class RatingActivity extends AppCompatActivity {
 
 
             Map<String, Object> allData = new HashMap<>();
+            allData.put("title",title);
+            allData.put("posterPath",posterUrl);
             allData.put("comment", comment);
             allData.put("date", date);
             allData.put("place", place);
