@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ViewGroup;
@@ -103,6 +104,13 @@ public class RatingListActivity extends AppCompatActivity {
 
             // 영화 제목과 사용자 평가 바인딩
             binding.textViewTitle.setText(movie.getTitle());
+
+            binding.getRoot().setOnClickListener(v -> {
+                Intent intent = new Intent(v.getContext(), RatedMovieActivity.class);
+                intent.putExtra("title", movie.getTitle());
+                intent.putExtra("posterPath", movie.getPosterPath());
+                v.getContext().startActivity(intent);
+            });
         }
     }
 

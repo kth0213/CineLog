@@ -4,29 +4,28 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RatingBar;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.bumptech.glide.Glide;
-import com.example.cinelog.databinding.ActivityRatingBinding;
+import com.example.cinelog.databinding.ActivityRatedMovieBinding;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class RatingActivity extends AppCompatActivity {
-
+public class RatedMovieActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityRatingBinding binding = ActivityRatingBinding.inflate(getLayoutInflater());
+        ActivityRatedMovieBinding binding = ActivityRatedMovieBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         mAuth = FirebaseAuth.getInstance();
@@ -34,14 +33,11 @@ public class RatingActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String title = intent.getStringExtra("title");
-        String posterUrl = intent.getStringExtra("posterUrl");
-        Glide.with(binding.poster.getContext())
-                .load(posterUrl)
-                .into(binding.poster);
-        binding.title.setText(title);
+        String posterPath = intent.getStringExtra("posterPath");
+        String uid = mAuth.getCurrentUser().getUid();
 
         db.collection("users")
-                .document(mAuth.getUid())
+                .document(uid)
                 .collection("ratings")
                 .whereEqualTo("title", title) // "title" 필드가 특정 값과 같은 문서 검색
                 .get()
@@ -73,42 +69,13 @@ public class RatingActivity extends AppCompatActivity {
                         Log.e("Firestore", "Error fetching movie by title: ", task.getException());
                     }
                 });
-
-        RatingBar ratingBar = binding.ratingbar;
-        EditText commentEditText = binding.comment;
-        EditText dateEditText = binding.date;
-        EditText placeEditText = binding.place;
-        EditText friendEditText = binding.friend;
-        EditText memoEditText = binding.memo;
-        Button saveButton = binding.saveButton;
-
-
-        saveButton.setOnClickListener(view -> {
-            String comment = commentEditText.getText().toString();
-            String date = dateEditText.getText().toString();
-            String place = placeEditText.getText().toString();
-            String friend = friendEditText.getText().toString();
-            String memo = memoEditText.getText().toString();
-            Log.d("Button", "Save button clicked");
-
-
-            Map<String, Object> allData = new HashMap<>();
-            allData.put("title",title);
-            allData.put("posterPath",posterUrl);
-            allData.put("comment", comment);
-            allData.put("date", date);
-            allData.put("place", place);
-            allData.put("friend", friend);
-            allData.put("memo", memo);
-            allData.put("rating", ratingBar.getRating());
-
-            db.collection("users/"+mAuth.getUid()+"/ratings").document(binding.title.getText().toString())
-                    .set(allData)
-                    .addOnSuccessListener(aVoid -> Log.d("Firestore", "Data saved successfully"))
-                    .addOnFailureListener(e -> Log.w("Firestore", "Error saving data", e));
-
-            Intent intentToRatingList = new Intent(this, RatingListActivity.class);
-            startActivity(intentToRatingList);
+        Button editButton = binding.editButton;
+        editButton.setOnClickListener(v -> {
+            Intent intent1 = new Intent(v.getContext(), RatingActivity.class);
+            intent1.putExtra("title",title);
+            intent1.putExtra("posterUrl",posterPath);
+            startActivity(intent1);
         });
     }
+
 }

@@ -6,6 +6,12 @@
     android:orientation="vertical"
     android:padding="30dp"
     android:background="#242A32">
+    <Button
+        android:id="@+id/editButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|top"
+        android:text="Edit"/>
 
     <ImageView
         android:id="@+id/poster"
@@ -26,7 +32,7 @@
         android:id="@+id/ratingbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:isIndicator="false"
+        android:isIndicator="true"
         android:numStars="5"
         android:stepSize="0.5"
         />
@@ -52,12 +58,11 @@
             android:layout_gravity="center_vertical"
             android:layout_marginRight="5dp"/>
 
-        <EditText
+        <TextView
             android:id="@+id/comment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="코멘트 입력"
             android:textColor="@color/white"
             android:background="#242A32"
             android:layout_marginLeft="8dp"
@@ -86,12 +91,11 @@
             android:layout_gravity="center_vertical"
             android:layout_marginRight="5dp"/>
 
-        <EditText
+        <TextView
             android:id="@+id/date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="코멘트 입력"
             android:textColor="@color/white"
             android:background="#242A32"
             android:layout_marginLeft="8dp"
@@ -119,12 +123,11 @@
             android:layout_gravity="center_vertical"
             android:layout_marginRight="5dp"/>
 
-        <EditText
+        <TextView
             android:id="@+id/place"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="장소 입력"
             android:textColor="@color/white"
             android:background="#242A32"
             android:layout_marginLeft="8dp"
@@ -152,12 +155,11 @@
             android:layout_gravity="center_vertical"
             android:layout_marginRight="5dp"/>
 
-        <EditText
+        <TextView
             android:id="@+id/friend"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="친구 입력"
             android:textColor="@color/white"
             android:background="#242A32"
             android:layout_marginLeft="8dp"
@@ -185,12 +187,11 @@
             android:layout_gravity="center_vertical"
             android:layout_marginRight="5dp"/>
 
-        <EditText
+        <TextView
             android:id="@+id/memo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="메모 입력"
             android:textColor="@color/white"
             android:background="#242A32"
             android:layout_marginLeft="8dp"
@@ -203,11 +204,5 @@
         android:layout_marginTop="10dp"
         android:background="@drawable/seperate_line"
         />
-
-    <Button
-        android:id="@+id/save_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="save"/>
 
 </LinearLayout>
