@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">CineLog</string>
     <string name="my_moive_lo">My Watching Log</string>
-    <string name="my_movie_search">새로운 로그를 추가하려면 제목을 검색하세요..</string>
+    <string name="my_movie_search">새로운 로그 추가</string>
     <string name="menu_home">Home</string>
     <string name="menu_calendar">Calendar</string>
     <string name="menu_profile">Profile</string>
