@@ -6,11 +6,13 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.cinelog.databinding.ActivityRatingBinding;
+import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -76,11 +78,21 @@ public class RatingActivity extends AppCompatActivity {
 
         RatingBar ratingBar = binding.ratingbar;
         EditText commentEditText = binding.comment;
-        EditText dateEditText = binding.date;
+        TextView dateEditText = binding.date;
         EditText placeEditText = binding.place;
         EditText friendEditText = binding.friend;
         EditText memoEditText = binding.memo;
         Button saveButton = binding.saveButton;
+        dateEditText.setOnClickListener(view -> {
+            MaterialDatePicker datePicker = MaterialDatePicker.Builder.datePicker()
+                    .setTitleText("Select date")
+                    .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                    .build();
+            datePicker.show(getSupportFragmentManager(), "datePicker");
+            datePicker.addOnPositiveButtonClickListener(selection -> {
+                dateEditText.setText(datePicker.getHeaderText());
+            });
+        });
 
 
         saveButton.setOnClickListener(view -> {
