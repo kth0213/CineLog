@@ -122,5 +122,9 @@ public class RatingActivity extends AppCompatActivity {
             Intent intentToRatingList = new Intent(this, RatingListActivity.class);
             startActivity(intentToRatingList);
         });
+
+        binding.backButton.setOnClickListener(view -> {
+            finish();
+        });
     }
 }
