@@ -7,6 +7,41 @@
     android:padding="30dp"
     android:background="#242A32">
 
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="#242A32"
+        android:orientation="horizontal">
+        <ImageButton
+            android:id="@+id/back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/baseline_arrow_back_ios_new_24"
+            android:layout_gravity="left|center"
+            android:contentDescription="@android:string/cancel"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:text="Rating List"
+            android:textSize="20dp"
+            android:gravity="center">
+
+        </TextView>
+        <ImageButton
+            android:id="@+id/add_button"
+            android:layout_width="27dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/baseline_add_24"
+            />
+
+
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"

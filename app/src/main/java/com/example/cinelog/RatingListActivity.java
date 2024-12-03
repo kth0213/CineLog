@@ -59,6 +59,13 @@ public class RatingListActivity extends AppCompatActivity {
 
         // 영화 데이터 가져오기
         fetchMovies();
+
+        binding.backButton.setOnClickListener(view -> {
+            finish();
+        });
+        binding.addButton.setOnClickListener(view -> {
+            startActivity(new Intent(RatingListActivity.this, Home_SearchActivity.class));
+        });
     }
 
     private void fetchMovies() {
