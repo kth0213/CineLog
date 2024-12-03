@@ -59,7 +59,7 @@
         android:layout_height="46dp"
         android:layout_marginTop="92dp"
         android:layout_marginEnd="8dp"
-        android:src="@drawable/add_log"
+        android:src="@drawable/baseline_add_box_24"
         app:layout_constraintEnd_toEndOf="@+id/rectangle_1"
         app:layout_constraintTop_toTopOf="parent" />
 
