@@ -42,6 +42,14 @@ public class Home_SearchActivity extends AppCompatActivity {
         ActivityHomeSearchBinding binding = ActivityHomeSearchBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        ImageView back_button = findViewById(R.id.back_button);
+        back_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
         SearchView searchView = binding.searchView;
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
