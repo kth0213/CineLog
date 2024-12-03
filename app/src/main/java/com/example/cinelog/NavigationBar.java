@@ -26,7 +26,6 @@ public class NavigationBar extends AppCompatActivity {
 
         BottomNavigationView bottomNavigationView = binding.navigation;
 
-
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -54,7 +53,15 @@ public class NavigationBar extends AppCompatActivity {
             }
         });
 
-        transferTo(HomeFragment.newInstance("param1","param2"));
+        if(getIntent().hasExtra("fragment")){
+            if(getIntent().getStringExtra("fragment").equals("CalendarFragment")) {
+                transferTo(CalendarFragment.newInstance("param1","param2"));
+                bottomNavigationView.setSelectedItemId(R.id.action_calendar);
+            }
+        }
+        else {
+            transferTo(HomeFragment.newInstance("param1","param2"));
+        }
     }
     private void transferTo(Fragment fragment){
         getSupportFragmentManager().beginTransaction()
