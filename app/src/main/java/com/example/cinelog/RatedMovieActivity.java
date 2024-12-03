@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -69,12 +70,15 @@ public class RatedMovieActivity extends AppCompatActivity {
                         Log.e("Firestore", "Error fetching movie by title: ", task.getException());
                     }
                 });
-        Button editButton = binding.editButton;
+        ImageButton editButton = binding.editButton;
         editButton.setOnClickListener(v -> {
             Intent intent1 = new Intent(v.getContext(), RatingActivity.class);
             intent1.putExtra("title",title);
             intent1.putExtra("posterUrl",posterPath);
             startActivity(intent1);
+        });
+        binding.backButton.setOnClickListener(view -> {
+            finish();
         });
     }
 

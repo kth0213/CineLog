@@ -1,6 +1,7 @@
 package com.example.cinelog;
 
 import android.content.Intent;
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -17,7 +18,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class RatingActivity extends AppCompatActivity {
@@ -84,13 +87,21 @@ public class RatingActivity extends AppCompatActivity {
         EditText memoEditText = binding.memo;
         Button saveButton = binding.saveButton;
         dateEditText.setOnClickListener(view -> {
-            MaterialDatePicker datePicker = MaterialDatePicker.Builder.datePicker()
+            Calendar calendar = Calendar.getInstance();
+            MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker()
                     .setTitleText("Select date")
                     .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
                     .build();
+
             datePicker.show(getSupportFragmentManager(), "datePicker");
+
             datePicker.addOnPositiveButtonClickListener(selection -> {
-                dateEditText.setText(datePicker.getHeaderText());
+                calendar.setTimeInMillis(selection);
+
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd", Locale.getDefault());
+                String formattedDate = dateFormat.format(calendar.getTime());
+
+                dateEditText.setText(formattedDate);
             });
         });
 
@@ -121,6 +132,10 @@ public class RatingActivity extends AppCompatActivity {
 
             Intent intentToRatingList = new Intent(this, RatingListActivity.class);
             startActivity(intentToRatingList);
+        });
+
+        binding.backButton.setOnClickListener(view -> {
+            finish();
         });
     }
 }

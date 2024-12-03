@@ -5,7 +5,9 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -24,6 +27,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 public class CalendarFragment extends Fragment {
 
@@ -78,34 +82,55 @@ public class CalendarFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.calendar_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
 
-        // 어댑터 초기화
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL);
+        dividerItemDecoration.setDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.seperate_line));
+        recyclerView.addItemDecoration(dividerItemDecoration);
+
+
         adapter = new MyAdapter(movieList);
         recyclerView.setAdapter(adapter);
 
         // 데이터 가져오기
         fetchMovies();
+
+        ImageButton addButton = view.findViewById(R.id.add_button);
+        addButton.setOnClickListener(view1 -> {
+            startActivity(new Intent(getContext(), Home_SearchActivity.class));
+        });
     }
 
     private void fetchMovies() {
         String uid = mAuth.getCurrentUser().getUid();
 
         db.collection("users").document(uid).collection("ratings")
+                .orderBy("date")
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        // 데이터가 성공적으로 불러와졌을 때 movieList를 업데이트
-                        movieList.clear(); // 이전 데이터를 삭제
+                        movieList.clear();
+                        String previousYearMonth = "";
+
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             String title = document.getString("title");
                             String posterPath = document.getString("posterPath");
                             Float rating = ((Double) document.get("rating")).floatValue();
-                            String date = document.getString("date");
+                            String date = document.getString("date"); // e.g., "2024-08-12"
 
+                            StringTokenizer split =new StringTokenizer(date,".");
+                            String yearMonth = split.nextToken() + "년 " + split.nextToken() + "월";
+
+                            // 새로운 년/월이면 추가
+                            if (!yearMonth.equals(previousYearMonth)) {
+                                movieList.add(new Movie(Movie.TYPE_YEAR_MONTH, yearMonth));
+                                previousYearMonth = yearMonth;
+                            }
+
+                            // 영화 데이터 추가
                             if (title != null && posterPath != null) {
-                                movieList.add(new Movie(title, posterPath, rating, date));
+                                movieList.add(new Movie(Movie.TYPE_MOVIE, title, posterPath, rating, split.nextToken())); // parts[2] = day
                             }
                         }
-                        // 데이터 변경 후 어댑터에 알리기
+
                         adapter.notifyDataSetChanged();
                     } else {
                         Log.e("Firestore", "Error getting documents: ", task.getException());
@@ -114,70 +139,98 @@ public class CalendarFragment extends Fragment {
     }
 
 
-    public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
+
+    public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         private List<Movie> movieList;
 
-        // ViewHolder 클래스 정의
-        public class ViewHolder extends RecyclerView.ViewHolder {
+        public MyAdapter(List<Movie> movieList) {
+            this.movieList = movieList;
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return movieList.get(position).getViewType();
+        }
+
+        @NonNull
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            if (viewType == Movie.TYPE_YEAR_MONTH) {
+                View view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_year_month, parent, false);
+                return new YearMonthViewHolder(view);
+            } else {
+                View view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_calendar, parent, false);
+                return new MovieViewHolder(view);
+            }
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+            Movie movie = movieList.get(position);
+
+            if (holder instanceof YearMonthViewHolder) {
+                ((YearMonthViewHolder) holder).bind(movie);
+            } else if (holder instanceof MovieViewHolder) {
+                ((MovieViewHolder) holder).bind(movie);
+            }
+        }
+
+        @Override
+        public int getItemCount() {
+            return movieList.size();
+        }
+
+        class YearMonthViewHolder extends RecyclerView.ViewHolder {
+            private final TextView yearMonthTextView;
+
+            public YearMonthViewHolder(View itemView) {
+                super(itemView);
+                yearMonthTextView = itemView.findViewById(R.id.year_month_text);
+            }
+
+            public void bind(Movie movie) {
+                yearMonthTextView.setText(movie.getDate());
+            }
+        }
+
+        // ViewHolder - 영화 기록
+        class MovieViewHolder extends RecyclerView.ViewHolder {
             private final TextView dateTextView;
             private final TextView titleTextView;
             private final RatingBar ratingBar;
             private final ImageView posterImageView;
 
-            public ViewHolder(View view) {
-                super(view);
-                dateTextView = view.findViewById(R.id.calendar_date);
-                titleTextView = view.findViewById(R.id.calendar_title);
-                ratingBar = view.findViewById(R.id.calendar_rating);
-                posterImageView = view.findViewById(R.id.calendar_poster);
+            public MovieViewHolder(View itemView) {
+                super(itemView);
+                dateTextView = itemView.findViewById(R.id.calendar_date);
+                titleTextView = itemView.findViewById(R.id.calendar_title);
+                ratingBar = itemView.findViewById(R.id.calendar_rating);
+                posterImageView = itemView.findViewById(R.id.calendar_poster);
 
-
-                view.findViewById(R.id.calendar_layout).setOnClickListener(view1 -> {
+                itemView.findViewById(R.id.calendar_layout).setOnClickListener(view -> {
                     int position = getBindingAdapterPosition();
                     Movie movie = movieList.get(position);
-                    Intent intent = new Intent(view1.getContext(), RatedMovieActivity.class);
+                    Intent intent = new Intent(view.getContext(), RatedMovieActivity.class);
                     intent.putExtra("title", movie.getTitle());
                     intent.putExtra("posterPath", movie.getPosterPath());
-                    view1.getContext().startActivity(intent);
+                    view.getContext().startActivity(intent);
                 });
             }
-        }
 
-        // 생성자: 데이터 리스트를 받아 저장
-        public MyAdapter(List<Movie> movieList) {
-            this.movieList = movieList;
-        }
+            public void bind(Movie movie) {
+                dateTextView.setText(movie.getDate());
+                titleTextView.setText(movie.getTitle());
+                ratingBar.setRating(movie.getRating());
 
-        // ViewHolder 생성
-        @NonNull
-        @Override
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_calendar, parent, false);
-            return new ViewHolder(view);
-        }
-
-        // ViewHolder에 데이터 바인딩
-        @Override
-        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            Movie movie = movieList.get(position);
-            holder.dateTextView.setText(movie.getDate());
-            holder.titleTextView.setText(movie.getTitle());
-            holder.ratingBar.setRating(movie.getRating());
-
-            Glide.with(holder.posterImageView.getContext())
-                    .load(movie.getPosterPath()) // 포스터 URL
-                    .into(holder.posterImageView);
-
-
-        }
-
-        // 데이터셋 크기 반환
-        @Override
-        public int getItemCount() {
-            return movieList.size();
+                Glide.with(posterImageView.getContext())
+                        .load(movie.getPosterPath())
+                        .into(posterImageView);
+            }
         }
     }
+
 
 }
