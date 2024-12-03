@@ -138,11 +138,4 @@ public class RatingListActivity extends AppCompatActivity {
             return movies.size();
         }
     }
-
-    // 예제 데이터를 반환 (Firebase에서 데이터를 가져오는 부분으로 대체 가능)
-    private List<Movie> getMovieList() {
-        List<Movie> movies = new ArrayList<>();
-        movies.add(new Movie("Inception", "https://m.media-amazon.com/images/I/91b3Xtjt0IL._AC_SY879_.jpg"));
-        return movies;
-    }
 }
