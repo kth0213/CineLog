@@ -1,6 +1,10 @@
 package com.example.cinelog;
 
 public class Movie {
+    public static final int TYPE_YEAR_MONTH = 0; // 년/월 표시
+    public static final int TYPE_MOVIE = 1; // 영화 기록
+
+    private int viewType;
     private String title;
     private String posterPath; // Firebase Storage 경로
     private float rating;
@@ -13,6 +17,19 @@ public class Movie {
         this.posterPath = posterPath;
     }
 
+    public Movie(int viewType, String date) {
+        this.viewType = viewType;
+        this.date = date;
+    }
+
+    public Movie(int viewType, String title, String posterPath, float rating, String date) {
+        this.viewType = viewType;
+        this.title = title;
+        this.posterPath = posterPath;
+        this.rating = rating;
+        this.date = date;
+    }
+
     public Movie(String title, String posterPath, Float rating, String date) {
         this.title = title;
         this.posterPath = posterPath;
@@ -20,7 +37,12 @@ public class Movie {
         this.date = date;
     }
 
-
+    public int getViewType() {
+        return viewType;
+    }
+    public void setViewType(int viewType){
+        this.viewType = viewType;
+    }
     public String getTitle() {
         return title;
     }

@@ -14,10 +14,9 @@
         android:background="#242A32"
         android:orientation="horizontal">
         <ImageButton
-            android:id="@+id/back_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/baseline_arrow_back_ios_new_24"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="#242A32"
             android:layout_gravity="left|center"
             android:contentDescription="@android:string/cancel"
             />
@@ -27,7 +26,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:textColor="@color/white"
-            android:text="Rating List"
+            android:text="Calendar"
             android:textSize="20dp"
             android:gravity="center">
 
@@ -44,6 +43,7 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="20dp"
         android:id="@+id/calendar_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
