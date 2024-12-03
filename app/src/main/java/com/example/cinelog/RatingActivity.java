@@ -130,7 +130,8 @@ public class RatingActivity extends AppCompatActivity {
                     .addOnSuccessListener(aVoid -> Log.d("Firestore", "Data saved successfully"))
                     .addOnFailureListener(e -> Log.w("Firestore", "Error saving data", e));
 
-            Intent intentToRatingList = new Intent(this, RatingListActivity.class);
+            Intent intentToRatingList = new Intent(this, NavigationBar.class)
+                    .putExtra("fragment", "CalendarFragment");
             startActivity(intentToRatingList);
         });
 

@@ -14,9 +14,10 @@
         android:background="#242A32"
         android:orientation="horizontal">
         <ImageButton
+            android:id="@+id/list_button"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:background="#242A32"
+            android:background="@drawable/baseline_list_24"
             android:layout_gravity="left|center"
             android:contentDescription="@android:string/cancel"
             />

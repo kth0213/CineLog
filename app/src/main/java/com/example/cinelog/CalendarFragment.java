@@ -97,6 +97,11 @@ public class CalendarFragment extends Fragment {
         addButton.setOnClickListener(view1 -> {
             startActivity(new Intent(getContext(), Home_SearchActivity.class));
         });
+
+        ImageButton listButton = view.findViewById(R.id.list_button);
+        listButton.setOnClickListener(view1 -> {
+            startActivity(new Intent(getContext(), RatingListActivity.class));
+        });
     }
 
     private void fetchMovies() {
