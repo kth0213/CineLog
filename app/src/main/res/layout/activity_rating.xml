@@ -64,6 +64,7 @@
         android:isIndicator="false"
         android:numStars="5"
         android:stepSize="0.5"
+        android:progressTint="#FFCC00"
         />
 
     <View

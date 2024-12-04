@@ -49,6 +49,7 @@
             android:layout_gravity="bottom"
             android:isIndicator="true"
             android:stepSize="0.5"
+            android:progressTint="#FFCC00"
             style="?android:attr/ratingBarStyleSmall" />
 
     </LinearLayout>
