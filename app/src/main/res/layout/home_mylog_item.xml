@@ -10,7 +10,9 @@
     <ImageView
         android:id="@+id/mylog_poster_image"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape"
+        android:clipToOutline="true"/>
 
 
 </LinearLayout>
