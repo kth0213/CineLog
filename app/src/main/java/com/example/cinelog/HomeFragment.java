@@ -5,20 +5,28 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Switch;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,6 +94,19 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
+
+        ConstraintLayout korCommunityLayout = view.findViewById(R.id.kor_com_constraintLayout);
+
+        korCommunityLayout.setOnClickListener(new View.OnClickListener() {  // 국내 영화 게시판 클릭리스너
+            @Override
+            public void onClick(View view) {
+                Log.d("HomeFragment", "ConstraintLayout 클릭됨");
+                Intent intent = new Intent(requireContext(), kor_Community.class);
+                startActivity(intent);
+            }
+        });
+
         ImageView searchbutton = view.findViewById(R.id.search_button);
 
         searchbutton.setOnClickListener(new View.OnClickListener() {
@@ -143,6 +164,42 @@ public class HomeFragment extends Fragment {
 
 
 
+        // 게사판에 게시물 미리보기 구현
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        TextView title1_text = view.findViewById(R.id.community_log1);
+        TextView title2_text = view.findViewById(R.id.community_log2);
+        TextView title3_text = view.findViewById(R.id.community_log3);
+
+
+        db.collection("posts").whereEqualTo("isSpoiler",false)
+                .limit(3).get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (queryDocumentSnapshots.size() > 0) {
+                        // 첫 번째 게시물
+                        DocumentSnapshot doc1 = queryDocumentSnapshots.getDocuments().get(0);
+                        String title1 = doc1.getString("title");
+                        title1_text.setText(title1 != null ? title1 : "제목 없음");
+
+                        // 두 번째 게시물
+                        if (queryDocumentSnapshots.size() > 1) {
+                            DocumentSnapshot doc2 = queryDocumentSnapshots.getDocuments().get(1);
+                            String title2 = doc2.getString("title");
+                            title2_text.setText(title2);
+                        }
+
+                        // 세 번째 게시물
+                        if (queryDocumentSnapshots.size() > 2) {
+                            DocumentSnapshot doc3 = queryDocumentSnapshots.getDocuments().get(2);
+                            String title3 = doc3.getString("title");
+                            title3_text.setText(title3);
+                        }
+                    } else {
+                        Log.e("Firestore", "No posts found");
+                    }
+
+                })
+                .addOnFailureListener(e -> Log.e("Firestore", "Error fetching posts", e));
     }
 
 
@@ -184,6 +241,7 @@ public class HomeFragment extends Fragment {
             imageView = itemView.findViewById(R.id.mylog_poster_image);
         }
     }
+
 }
 
 
