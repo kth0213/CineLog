@@ -41,6 +41,13 @@
 
 
     </LinearLayout>
+    <Spinner
+        android:id="@+id/spinnerRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:entries="@array/rating_options"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
