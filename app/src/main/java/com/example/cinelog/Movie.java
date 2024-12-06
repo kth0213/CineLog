@@ -16,6 +16,11 @@ public class Movie {
         this.title = title;
         this.posterPath = posterPath;
     }
+    public Movie(String title, String posterPath, Float rating) {
+        this.title = title;
+        this.posterPath = posterPath;
+        this.rating = rating;
+    }
 
     public Movie(int viewType, String date) {
         this.viewType = viewType;
