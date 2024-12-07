@@ -1,6 +1,7 @@
 package com.example.cinelog;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +24,12 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -31,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class kor_Community extends AppCompatActivity {
 
@@ -63,16 +71,16 @@ public class kor_Community extends AppCompatActivity {
             }
         });
 
-//        Button vote_button = findViewById(R.id.vote_but);
-//        vote_button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                VoteBottomSheetDialogFragment voteSheet = new VoteBottomSheetDialogFragment();
-//                voteSheet.show(getSupportFragmentManager(), "VoteSheet");
-//
-//            }
-//        });
+        Button vote_button = findViewById(R.id.vote_but);
+        vote_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                VoteBottomSheetDialogFragment voteSheet = new VoteBottomSheetDialogFragment();
+                voteSheet.show(getSupportFragmentManager(), "VoteSheet");
+
+            }
+        });
 
 
 
@@ -100,6 +108,14 @@ public class kor_Community extends AppCompatActivity {
             // 스위치 상태 변경 리스너
             switchCompat.setOnCheckedChangeListener((buttonView, isChecked) -> loadPosts(isChecked));
         }
+
+        // 투표 결과 출력
+        PieChart pieChart = findViewById(R.id.vote_result_pie_chart);
+        Legend legend = pieChart.getLegend();
+        pieChart.setEntryLabelTextSize(12f);
+        pieChart.setHoleColor(Color.TRANSPARENT);
+
+        loadVoteResults();
 
 
     }
@@ -206,6 +222,64 @@ public class kor_Community extends AppCompatActivity {
             }
         }
     }
+
+    private void loadVoteResults() {
+        db.collection("votes").document("noir_vote")
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        List<Map<String, Object>> optionData = (List<Map<String, Object>>) documentSnapshot.get("options");
+                        if (optionData != null) {
+                            List<String> titles = new ArrayList<>();
+                            List<Integer> votes = new ArrayList<>();
+                            int totalVotes = 0;
+
+                            for (Map<String, Object> option : optionData) {
+                                String title = (String) option.get("title");
+                                int voteCount = ((Long) option.get("votes")).intValue();
+                                titles.add(title);
+                                votes.add(voteCount);
+                                totalVotes += voteCount;
+                            }
+
+                            // 업데이트된 데이터로 그래프 및 텍스트 결과 표시
+                            updatePieChart(titles, votes);
+//                            updateTextResults(titles, votes, totalVotes);
+                        }
+                    }
+                })
+                .addOnFailureListener(Throwable::printStackTrace);
+    }
+
+    private void updatePieChart(List<String> titles, List<Integer> votes) {
+        PieChart pieChart = findViewById(R.id.vote_result_pie_chart);
+        List<PieEntry> entries = new ArrayList<>();
+
+        for (int i = 0; i < titles.size(); i++) {
+            entries.add(new PieEntry(votes.get(i), titles.get(i)));
+        }
+
+        PieDataSet dataSet = new PieDataSet(entries, "투표 결과");
+        dataSet.setColors(ColorTemplate.MATERIAL_COLORS); // 기본 색상 템플릿
+        dataSet.setValueTextSize(12f);
+
+        PieData data = new PieData(dataSet);
+        pieChart.setData(data);
+        pieChart.invalidate(); // 새로 고침
+    }
+
+//    private void updateTextResults(List<String> titles, List<Integer> votes, int totalVotes) {
+//        TextView resultTextView = findViewById(R.id.ranking_1);
+//        StringBuilder resultText = new StringBuilder();
+//
+//        for (int i = 0; i < titles.size(); i++) {
+//            float percentage = (votes.get(i) / (float) totalVotes) * 100;
+//            resultText.append(String.format(Locale.getDefault(), "%s: %d표 (%.1f%%)\n", titles.get(i), votes.get(i), percentage));
+//        }
+//
+//        resultTextView.setText(resultText.toString());
+//        resultTextView.setVisibility(View.VISIBLE);
+//    }
 }
 
 
