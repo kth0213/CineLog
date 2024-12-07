@@ -32,6 +32,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
+
     viewBinding {
         enable = true
     }
@@ -54,5 +55,8 @@ dependencies {
     implementation ("com.firebaseui:firebase-ui-firestore:8.0.0")
     implementation ("androidx.paging:paging-runtime:3.2.1")
     implementation("com.google.firebase:firebase-storage")
+
+    // 원형 그래프 라이브러리
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
 }

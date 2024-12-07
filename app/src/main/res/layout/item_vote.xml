@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="140dp"
+    android:layout_height="210dp"
+    android:foreground="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:elevation="4dp">
+
+
+    <ImageView
+        android:id="@+id/vote_movie_poster"
+        android:layout_width="match_parent"
+        android:layout_height="162dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/joker"
+        android:background="@drawable/shape"
+        android:clipToOutline="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/vote_movie_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="조커"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="@+id/vote_movie_poster"
+        app:layout_constraintStart_toStartOf="@+id/vote_movie_poster"
+        app:layout_constraintTop_toBottomOf="@+id/vote_movie_poster" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

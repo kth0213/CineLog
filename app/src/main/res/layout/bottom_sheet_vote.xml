@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/vote_question"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="질문"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:paddingBottom="8dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/vote_options_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="-20dp"
+        android:paddingBottom="16dp" />
+
+    <TextView
+        android:text="선택한 영화 제목"
+        android:id="@+id/selected_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"/>
+
+
+    <Button
+        android:id="@+id/submit_vote_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="투표하기"/>
+
+</LinearLayout>

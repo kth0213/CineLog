@@ -39,41 +39,72 @@
 
     <RelativeLayout
         android:id="@+id/kor_vote"
-        android:layout_width="345dp"
-        android:layout_height="158dp"
+        android:layout_width="371dp"
+        android:layout_height="319dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="84dp"
         android:clipToOutline="true"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/some_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_marginLeft="17dp"
             android:layout_alignParentTop="true"
+            android:layout_marginLeft="17dp"
             android:layout_marginTop="8dp"
-            android:text="실시간 투표"
             android:gravity="top"
-            android:textColor="#ffffff"
-            />
+            android:text="실시간 투표"
+            android:textColor="#ffffff" />
 
         <Button
             android:id="@+id/vote_but"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="투표하기"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentRight="true"
+            android:text="투표하기" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="230dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="-1dp">
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/vote_result_pie_chart"
+                android:layout_width="300dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_weight="1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+<!--            <TextView-->
+<!--                android:id="@+id/ranking_1"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="12dp"-->
+<!--                android:layout_marginTop="16dp"-->
+<!--                android:text="1위: 영화 제목 - 50%"-->
+<!--                android:textColor="#000000"-->
+<!--                android:textSize="16sp"-->
+<!--                app:layout_constraintStart_toEndOf="@+id/vote_result_pie_chart"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </RelativeLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="467dp"
+        android:layout_height="470dp"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:layout_editor_absoluteX="0dp">
 
@@ -103,7 +134,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/kor_community_recyclerview"
             android:layout_width="406dp"
-            android:layout_height="394dp"
+            android:layout_height="430dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
