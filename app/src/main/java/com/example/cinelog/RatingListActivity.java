@@ -5,9 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 
@@ -57,24 +60,56 @@ public class RatingListActivity extends AppCompatActivity {
         binding.recyclerView.setAdapter(adapter);
 
         // 영화 데이터 가져오기
-        fetchMovies();
+        fetchAllMovies();
+
+        binding.backButton.setOnClickListener(view -> {
+            finish();
+        });
+        binding.addButton.setOnClickListener(view -> {
+            startActivity(new Intent(RatingListActivity.this, Home_SearchActivity.class));
+        });
+        binding.spinnerRating.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedOption = parent.getItemAtPosition(position).toString();
+
+                if (selectedOption.equals("All")) {
+                    // 전체 데이터를 가져오기
+                    fetchAllMovies();
+                } else {
+                    // 특정 점수의 데이터만 가져오기
+                    float specificRating = Float.parseFloat(selectedOption);
+                    fetchMovies(specificRating);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // 기본 동작: 전체 데이터를 가져오기
+                fetchAllMovies();
+            }
+        });
+
     }
 
-    private void fetchMovies() {
+    private void fetchMovies(Float specificRating) {
         String uid = mAuth.getCurrentUser().getUid();
 
+        // Firestore 쿼리 생성
         db.collection("users").document(uid).collection("ratings")
+                .whereEqualTo("rating", specificRating) // 특정 점수의 영화 가져오기
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        // 데이터가 성공적으로 불러와졌을 때 movieList를 업데이트
-                        movieList.clear();  // 이전 데이터를 삭제
+                        // 데이터가 성공적으로 불러와졌을 때 movieList 업데이트
+                        movieList.clear();
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             String title = document.getString("title");
                             String posterPath = document.getString("posterPath");
+                            Float rating = ((Double) document.get("rating")).floatValue();
 
-                            if (title != null && posterPath != null) {
-                                movieList.add(new Movie(title, posterPath));
+                            if (title != null && posterPath != null && rating != null) {
+                                movieList.add(new Movie(title, posterPath, rating));
                             }
                         }
                         // 데이터 변경 후 어댑터에 알리기
@@ -84,6 +119,31 @@ public class RatingListActivity extends AppCompatActivity {
                     }
                 });
     }
+    private void fetchAllMovies() {
+        String uid = mAuth.getCurrentUser().getUid();
+
+        db.collection("users").document(uid).collection("ratings")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        movieList.clear();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            String title = document.getString("title");
+                            String posterPath = document.getString("posterPath");
+                            Float rating = ((Double) document.get("rating")).floatValue();
+
+                            if (title != null && posterPath != null && rating != null) {
+                                movieList.add(new Movie(title, posterPath, rating));
+                            }
+                        }
+                        adapter.notifyDataSetChanged();
+                    } else {
+                        Log.e("Firestore", "Error getting documents: ", task.getException());
+                    }
+                });
+    }
+
+
 
     private class RatingHolder extends RecyclerView.ViewHolder {
         private final ItemMovieBinding binding;
@@ -103,6 +163,14 @@ public class RatingListActivity extends AppCompatActivity {
 
             // 영화 제목과 사용자 평가 바인딩
             binding.textViewTitle.setText(movie.getTitle());
+            binding.listRating.setRating(movie.getRating());
+
+            binding.getRoot().setOnClickListener(v -> {
+                Intent intent = new Intent(v.getContext(), RatedMovieActivity.class);
+                intent.putExtra("title", movie.getTitle());
+                intent.putExtra("posterPath", movie.getPosterPath());
+                v.getContext().startActivity(intent);
+            });
         }
     }
 
@@ -129,12 +197,5 @@ public class RatingListActivity extends AppCompatActivity {
         public int getItemCount() {
             return movies.size();
         }
-    }
-
-    // 예제 데이터를 반환 (Firebase에서 데이터를 가져오는 부분으로 대체 가능)
-    private List<Movie> getMovieList() {
-        List<Movie> movies = new ArrayList<>();
-        movies.add(new Movie("Inception", "https://m.media-amazon.com/images/I/91b3Xtjt0IL._AC_SY879_.jpg"));
-        return movies;
     }
 }
