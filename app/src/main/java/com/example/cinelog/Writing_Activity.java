@@ -1,7 +1,6 @@
 package com.example.cinelog;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -27,7 +26,6 @@ public class Writing_Activity extends AppCompatActivity {
     private EditText editTitle, editContent;
     private CheckBox checkBox;
     private Button button;
-    private String nickname;
 
 
     @Override
@@ -42,8 +40,6 @@ public class Writing_Activity extends AppCompatActivity {
         editContent = findViewById(R.id.edit_content);
         checkBox = findViewById(R.id.checkbox);
         button = findViewById(R.id.button_submit_post);
-
-
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,13 +59,6 @@ public class Writing_Activity extends AppCompatActivity {
         });
 
 
-        getSupportFragmentManager().setFragmentResultListener("requestKey", this, (requestKey,nick) -> {
-            nickname = nick.getString("nickname");
-            // 데이터 사용
-            Log.d("Nickname", nickname);
-        });
-
-
 
 
     }
@@ -81,7 +70,6 @@ public class Writing_Activity extends AppCompatActivity {
         post.put("content", content);
         post.put("isSpoiler", isSpoiler); // 스포일러 여부 추가
         post.put("timestamp", FieldValue.serverTimestamp()); // 서버 시간 사용
-        post.put("author",nickname);
         post.put("id",postId);
 
         db.collection("posts").document(postId)
