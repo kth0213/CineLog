@@ -1,6 +1,7 @@
 package com.example.cinelog;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,108 +12,110 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 public class ProfileFragment extends Fragment {
 
-
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1;
-    private String mParam2;
-
-    private FirebaseFirestore db;
     private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
+
+    private ImageView profileImage;
+    private TextView nickname, ratingCount, writingCount, commentCount;
+    private Button keywordSettingsButton, logoutButton;
 
     public ProfileFragment() {
     }
 
-    public static ProfileFragment newInstance(String param1, String param2) {
-        ProfileFragment fragment = new ProfileFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    public static Fragment newInstance(String param1, String param2) {
+
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-        db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        String uid = mAuth.getCurrentUser().getUid();
 
-        db.collection("users")
-                .document(uid)
-                .get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        String nickname = documentSnapshot.getString("nickname");
-                        TextView nicknameTextView = view.findViewById(R.id.nickname);
-                        nicknameTextView.setText(nickname);
-                        Log.d("Firestore", "Nickname: " + nickname);
-                    } else {
-                        Log.d("Firestore", "Document does not exist!");
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    Log.e("Firestore", "Error fetching nickname: ", e);
-                });
+        // View 연결
+        profileImage = view.findViewById(R.id.profileImage);
+        nickname = view.findViewById(R.id.nickname);
+        ratingCount = view.findViewById(R.id.rating_count);
+        writingCount = view.findViewById(R.id.writing_count);
+        commentCount = view.findViewById(R.id.comment_count);
+        keywordSettingsButton = view.findViewById(R.id.keyword_settingsButton);
+        logoutButton = view.findViewById(R.id.logoutButton);
 
-        db.collection("users").document(uid).collection("ratings")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        int ratingCount = task.getResult().size();
-                        TextView ratingCountTextView = view.findViewById(R.id.rating_count);
-                        ratingCountTextView.setText(String.valueOf(ratingCount));
-                        Log.d("Firestore", "문서 개수: " + ratingCount);
-                    } else {
-                        Log.e("Firestore", "문서 개수 가져오기 실패: ", task.getException());
-                    }
-                });
 
-        view.findViewById(R.id.rating_count).setOnClickListener(v -> {
-            startActivity(new Intent(getActivity(), RatingListActivity.class));
+        loadUserData();
+        loadUserStatistics();
+
+
+        profileImage.setOnClickListener(v -> {
+            Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(pickPhoto, 1);
         });
 
-        view.findViewById(R.id.keyword_settingsButton).setOnClickListener(v -> {
-           startActivity(new Intent(getActivity(), KeywordSettingsActivity.class));
-        });
 
-        view.findViewById(R.id.logoutButton).setOnClickListener(v -> {
+        keywordSettingsButton.setOnClickListener(v -> startActivity(new Intent(getActivity(), KeywordSettingsActivity.class)));
+
+
+        logoutButton.setOnClickListener(v -> {
             mAuth.signOut();
             startActivity(new Intent(getActivity(), LogInActivity.class));
             getActivity().finish();
         });
-
-        view.findViewById(R.id.setting_button).setOnClickListener(v -> {
-            startActivity(new Intent(getActivity(), SettingsActivity.class));
-        });
-
-
     }
 
+    private void loadUserData() {
+        String uid = mAuth.getCurrentUser().getUid();
+
+        db.collection("users").document(uid).get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                String userNickname = documentSnapshot.getString("nickname");
+                nickname.setText(userNickname != null ? userNickname : "Anonymous");
+            }
+        }).addOnFailureListener(e -> Log.e("Firestore", "사용자 데이터 가져오기 오류: ", e));
+    }
+
+    private void loadUserStatistics() {
+        String uid = mAuth.getCurrentUser().getUid();
+
+        db.collection("users").document(uid).get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                long ratings = documentSnapshot.getLong("ratingsCount");
+                long posts = documentSnapshot.getLong("postsCount");
+                long comments = documentSnapshot.getLong("commentsCount");
+
+                ratingCount.setText(String.valueOf(ratings));
+                writingCount.setText(String.valueOf(posts));
+                commentCount.setText(String.valueOf(comments));
+            }
+        }).addOnFailureListener(e -> Log.e("Firestore", "통계 가져오기 오류: ", e));
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == getActivity().RESULT_OK && data != null) {
+            Uri selectedImage = data.getData();
+            profileImage.setImageURI(selectedImage);
+        }
+    }
 }
+

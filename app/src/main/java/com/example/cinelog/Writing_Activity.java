@@ -68,8 +68,8 @@ public class Writing_Activity extends AppCompatActivity {
         Map<String, Object> post = new HashMap<>();
         post.put("title", title);
         post.put("content", content);
-        post.put("isSpoiler", isSpoiler); // 스포일러 여부 추가
-        post.put("timestamp", FieldValue.serverTimestamp()); // 서버 시간 사용
+        post.put("isSpoiler", isSpoiler);
+        post.put("timestamp", FieldValue.serverTimestamp());
         post.put("id",postId);
 
         db.collection("posts").document(postId)
@@ -84,4 +84,6 @@ public class Writing_Activity extends AppCompatActivity {
                     e.printStackTrace();
                 });
     }
+
+
 }
