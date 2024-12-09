@@ -89,8 +89,8 @@ public class LogInActivity extends AppCompatActivity {
 
     private void updateUI(FirebaseUser user){
         if(user != null) {
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra("USER_PROFILE", "email: " + user.getEmail() + "\n" + "uid: " + user.getUid());
+            Intent intent = new Intent(this, NavigationBar.class);
+            //intent.putExtra("USER_PROFILE", "email: " + user.getEmail() + "\n" + "uid: " + user.getUid());
 
             startActivity(intent);
         }
