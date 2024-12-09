@@ -48,6 +48,7 @@ public class Movie {
     public void setViewType(int viewType){
         this.viewType = viewType;
     }
+
     public String getTitle() {
         return title;
     }

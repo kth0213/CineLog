@@ -120,6 +120,8 @@ public class kor_Community extends AppCompatActivity {
 
 
     }
+
+
     private void loadPosts(boolean filterSpoiler) {
         Log.d("kor_Community", "Loading posts. Filter for spoiler: " + filterSpoiler);
 
@@ -193,7 +195,6 @@ public class kor_Community extends AppCompatActivity {
                 }
             });
 
-
             // 시간 설정
             // 시간 설정 (타임스탬프 처리)
             Timestamp timestamp = post.getTimestamp();
@@ -201,7 +202,7 @@ public class kor_Community extends AppCompatActivity {
                 Date date = timestamp.toDate();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd HH:mm", Locale.getDefault());
                 String formattedDate = dateFormat.format(date);
-                holder.timestamp.setText("작성 시간: " + formattedDate);
+                holder.timestamp.setText(formattedDate);
             }
 
         }

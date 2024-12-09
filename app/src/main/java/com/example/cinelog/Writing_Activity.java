@@ -1,6 +1,7 @@
 package com.example.cinelog;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -26,6 +27,7 @@ public class Writing_Activity extends AppCompatActivity {
     private EditText editTitle, editContent;
     private CheckBox checkBox;
     private Button button;
+    private String nickname;
 
 
     @Override
@@ -36,10 +38,22 @@ public class Writing_Activity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
 
+
         editTitle = findViewById(R.id.edit_title);
         editContent = findViewById(R.id.edit_content);
         checkBox = findViewById(R.id.checkbox);
         button = findViewById(R.id.button_submit_post);
+
+        String currentUserId = mAuth.getCurrentUser().getUid();
+
+        db.collection("users").document(currentUserId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        nickname = documentSnapshot.getString("nickname");
+                    }
+                })
+                .addOnFailureListener(e -> Log.e("Error", "Failed to fetch nickname", e));
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,7 +66,7 @@ public class Writing_Activity extends AppCompatActivity {
                     return;
                 }
 
-                savePostToFirestore(title, content, spoiler);
+                savePostToFirestore(title, content, spoiler,nickname);
 
                 finish();
             }
@@ -61,8 +75,12 @@ public class Writing_Activity extends AppCompatActivity {
 
 
 
+
+
+
+
     }
-    private void savePostToFirestore(String title, String content, boolean isSpoiler) {
+    private void savePostToFirestore(String title, String content, boolean isSpoiler, String nickname) {
 
         String postId = db.collection("posts").document().getId(); // 고유 ID 생성
         Map<String, Object> post = new HashMap<>();
@@ -70,6 +88,7 @@ public class Writing_Activity extends AppCompatActivity {
         post.put("content", content);
         post.put("isSpoiler", isSpoiler); // 스포일러 여부 추가
         post.put("timestamp", FieldValue.serverTimestamp()); // 서버 시간 사용
+        post.put("author",nickname);
         post.put("id",postId);
 
         db.collection("posts").document(postId)

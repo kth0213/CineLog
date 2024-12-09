@@ -1,6 +1,8 @@
 package com.example.cinelog;
 
 import android.content.Intent;
+import android.icu.text.DateFormat;
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,15 +23,20 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
+
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class kor_Community_log extends AppCompatActivity {
@@ -129,7 +136,14 @@ public class kor_Community_log extends AppCompatActivity {
         public void onBindViewHolder(@NonNull CommentViewHolder holder, int position) {
             Comment comment = commentList.get(position);
             holder.commentText.setText(comment.getText());
-            holder.timestampText.setText(timestamp);
+
+             Timestamp timestamp1 = comment.getTimestamp();
+             Date commentData = timestamp1.toDate();
+             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM.dd",Locale.getDefault());
+             holder.timestampText.setText(simpleDateFormat.format(commentData));
+
+
+
         }
 
         @Override

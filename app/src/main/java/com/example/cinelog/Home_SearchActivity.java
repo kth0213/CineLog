@@ -95,11 +95,14 @@ public class Home_SearchActivity extends AppCompatActivity {
             Search_Movie movie = movies.get(position); // 지금 표시할 영화 데이터 받기
 
             holder.titleTextView.setText(movie.getTitle());  // 위에서 정한 영화의 제목을 띄우기
+            holder.DirectorView.setText(movie.getDirector());
+            holder.DateView.setText(movie.getTime());
 
             Glide.with(context)   // 그릴드 이용해서 영화 포스터 이미지 띄우기
                     .load(movie.getPosterUrl())
                     .into(holder.posterImageView);
             ImageView movieButton = holder.itemView.findViewById(R.id.movie_button);
+
             movieButton.setOnClickListener(view ->{
                 Toast.makeText(context,"추가되었습니다.",Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(context, RatingActivity.class);
@@ -119,6 +122,7 @@ public class Home_SearchActivity extends AppCompatActivity {
             TextView titleTextView;
             ImageView posterImageView;
             TextView DirectorView;
+            TextView DateView;
 
             public MovieViewHolder(@NonNull View itemView) {
 
@@ -126,6 +130,8 @@ public class Home_SearchActivity extends AppCompatActivity {
 
                 titleTextView = itemView.findViewById(R.id.moive_title);  // 아이템 xml에서 영화 제목이랑 포스터 이미지 연결
                 posterImageView = itemView.findViewById(R.id.moive_poster);
+                DirectorView = itemView.findViewById(R.id.moive_director);
+                DateView = itemView.findViewById(R.id.moive_date);
             }
         }
     }
@@ -145,8 +151,9 @@ public class Home_SearchActivity extends AppCompatActivity {
                         String title = document.getString("title");
                         String posterUrl = document.getString("poster_url");
                         String director = document.getString("director");
+                        String date = document.getString("Time");
 
-                        movieList.add(new Search_Movie(title,posterUrl,director));
+                        movieList.add(new Search_Movie(title,posterUrl,director,date));
                     }
                     if(movieList.isEmpty()){
                         showNoResultsMessage();

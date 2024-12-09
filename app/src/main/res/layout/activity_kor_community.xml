@@ -133,8 +133,8 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/kor_community_recyclerview"
-            android:layout_width="406dp"
-            android:layout_height="430dp"
+            android:layout_width="409dp"
+            android:layout_height="405dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 

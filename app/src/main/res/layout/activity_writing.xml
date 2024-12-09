@@ -65,7 +65,8 @@
             android:inputType="text"
             android:padding="8dp"
             android:textColorHint="#FFFFFF"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:textColor="#FFFFFF"/>
 
         <EditText
             android:id="@+id/edit_content"
@@ -77,7 +78,8 @@
             android:inputType="textMultiLine"
             android:minLines="5"
             android:padding="8dp"
-            android:textColorHint="#FFFFFF" />
+            android:textColorHint="#FFFFFF"
+            android:textColor="#FFFFFF"/>
 
         <Button
             android:id="@+id/button_submit_post"

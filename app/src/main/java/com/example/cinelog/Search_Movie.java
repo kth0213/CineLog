@@ -4,11 +4,13 @@ public class Search_Movie {
     private String title;
     private String posterUrl;
     private String director;
+    private String time;
 
-    public Search_Movie(String title, String posterUrl, String director) {
+    public Search_Movie(String title, String posterUrl, String director,String time) {
         this.title = title;
         this.posterUrl = posterUrl;
         this.director = director;
+        this.time = time;
     }
 
     public String getTitle() {
@@ -34,4 +36,7 @@ public class Search_Movie {
     public void setDirector(String director) {
         this.director = director;
     }
+
+    public String getTime(){ return time;}
+
 }
