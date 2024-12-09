@@ -85,6 +85,7 @@ public class SignUpActivity extends AppCompatActivity {
             Map<String, Object> userData = new HashMap<>();
             userData.put("email", user.getEmail());
             userData.put("createdAt", System.currentTimeMillis());
+            userData.put("nickname", user.getEmail());
 
             // Firestore에 사용자 데이터 저장
             db.collection("users").document(uid)
