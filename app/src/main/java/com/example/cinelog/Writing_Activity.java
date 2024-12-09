@@ -13,6 +13,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -21,6 +22,7 @@ import java.util.Map;
 
 public class Writing_Activity extends AppCompatActivity {
     private FirebaseFirestore db;
+    private FirebaseAuth mAuth;
     private EditText editTitle, editContent;
     private CheckBox checkBox;
     private Button button;
@@ -32,6 +34,7 @@ public class Writing_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_writing);
 
         db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
         editTitle = findViewById(R.id.edit_title);
         editContent = findViewById(R.id.edit_content);
