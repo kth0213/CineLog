@@ -49,7 +49,15 @@ public class NavigationBar extends AppCompatActivity {
         bottomNavigationView.setOnItemReselectedListener(new NavigationBarView.OnItemReselectedListener() {
             @Override
             public void onNavigationItemReselected(@NonNull MenuItem item) {
-
+                int itemId = item.getItemId();
+                if(itemId==R.id.action_calendar){
+                    if(getSupportFragmentManager().findFragmentById(R.id.fragment_container) instanceof CalendarFragment){
+                        transferTo(new CustomCalendarFragment());
+                    }
+                    else{
+                        transferTo(CalendarFragment.newInstance("param1","param2"));
+                    }
+                }
             }
         });
 
