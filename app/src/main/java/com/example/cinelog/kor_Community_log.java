@@ -25,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -68,7 +69,7 @@ public class kor_Community_log extends AppCompatActivity {
         String title = intent.getStringExtra("title");
         String cotent = intent.getStringExtra("content");
         String author = intent.getStringExtra("author");
-         timestamp = intent.getStringExtra("timestamp");
+        timestamp = intent.getStringExtra("timestamp");
 
 
         // 저장할 게시물 id 따로 받기
@@ -150,7 +151,7 @@ public class kor_Community_log extends AppCompatActivity {
     private void loadComments() {
 
         db.collection("posts").document(postid).collection("comments")
-                    .orderBy("timestamp") // 시간순 정렬
+                    .orderBy("timestamp", Query.Direction.ASCENDING) // 시간순 정렬
                     .addSnapshotListener((value, error) -> {
                         if (error != null) {
                             error.printStackTrace();

@@ -112,6 +112,10 @@ public class ProfileFragment extends Fragment {
             startActivity(new Intent(getActivity(), SettingsActivity.class));
         });
 
+        Bundle nick = new Bundle();
+        nick.putString("nickname",uid);
+        getParentFragmentManager().setFragmentResult("requestkey",nick);
+
 
     }
 

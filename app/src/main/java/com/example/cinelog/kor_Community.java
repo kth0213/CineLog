@@ -33,6 +33,7 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -123,7 +124,8 @@ public class kor_Community extends AppCompatActivity {
         Log.d("kor_Community", "Loading posts. Filter for spoiler: " + filterSpoiler);
 
         db.collection("posts")
-                .whereEqualTo("isSpoiler", filterSpoiler) // 스포일러 필터 조건
+                .whereEqualTo("isSpoiler", filterSpoiler)
+                .orderBy("timestamp", Query.Direction.DESCENDING)// 스포일러 필터 조건
                 .get()
                 .addOnSuccessListener(querySnapshot -> {
                     postList.clear();
@@ -184,6 +186,7 @@ public class kor_Community extends AppCompatActivity {
                     intent.putExtra("author",post.getAuthor());
                     intent.putExtra("timestamp",formattedDate);
                     intent.putExtra("id",post.getId());
+
 
                     view.getContext().startActivity(intent);
 

@@ -80,15 +80,16 @@
                 android:gravity="center"
                 android:textColor="@color/white"
                 android:layout_weight="1"/>
+
             <TextView
                 android:id="@+id/rating_count"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
-                android:text="기록 수"
-                android:textSize="20dp"
+                android:layout_weight="3"
                 android:gravity="center"
+                android:text="기록 수"
                 android:textColor="@color/white"
-                android:layout_weight="3"/>
+                android:textSize="20dp" />
         </TableRow>
         <View
             android:layout_width="match_parent"
@@ -121,15 +122,16 @@
             android:background="@drawable/seperate_line"
             />
         <TableRow>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
-                android:text="댓글"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:textColor="@color/white"
                 android:layout_weight="1"
-                />
+                android:gravity="center"
+                android:text="댓글"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/comment_count"
                 android:layout_width="wrap_content"
