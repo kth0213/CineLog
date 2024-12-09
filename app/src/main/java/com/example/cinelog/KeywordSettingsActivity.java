@@ -4,14 +4,13 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.cinelog.databinding.ActivityKeywordSettingsBinding;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +21,8 @@ public class KeywordSettingsActivity extends AppCompatActivity {
     private List<String> keywordList;
     private List<String> filteredKeywordList;
     private ImageView btnBack;
+    private EditText etNewKeyword;
+    private Button btnAddKeyword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,39 +30,40 @@ public class KeywordSettingsActivity extends AppCompatActivity {
         ActivityKeywordSettingsBinding binding = ActivityKeywordSettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-
         recyclerView = binding.rvKeywordList;
         btnBack = binding.btnBack;
-
+        etNewKeyword = binding.etNewKeyword;
+        btnAddKeyword = binding.btnAddKeyword;
 
         keywordList = new ArrayList<>();
         filteredKeywordList = new ArrayList<>();
         populateDummyKeywords();
 
-        keywordAdapter = new KeywordAdapter(filteredKeywordList);  // 필터된 키워드 리스트 사용
+        keywordAdapter = new KeywordAdapter(filteredKeywordList);  // Use filtered keyword list
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(keywordAdapter);
 
-
         btnBack.setOnClickListener(v -> finish());
 
+        btnAddKeyword.setOnClickListener(v -> {
+            String newKeyword = etNewKeyword.getText().toString().trim();
+            if (!newKeyword.isEmpty()) {
+                addKeyword(newKeyword);
+                etNewKeyword.setText("");
+            }
+        });
 
         binding.etSearchKeyword.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {}
 
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-
                 filterKeywords(charSequence.toString());
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
+            public void afterTextChanged(Editable editable) {}
         });
     }
 
@@ -74,18 +76,14 @@ public class KeywordSettingsActivity extends AppCompatActivity {
         filteredKeywordList.addAll(keywordList);
     }
 
-
     private void filterKeywords(String query) {
-        filteredKeywordList.clear();  //
+        filteredKeywordList.clear();
 
         if (query.isEmpty()) {
-
             filteredKeywordList.addAll(keywordList);
         } else {
-
             String normalizedQuery = query.trim().toLowerCase();
 
-            // 한국어 포함 필터링
             for (String keyword : keywordList) {
                 if (keyword.toLowerCase().contains(normalizedQuery)) {
                     filteredKeywordList.add(keyword);
@@ -93,9 +91,13 @@ public class KeywordSettingsActivity extends AppCompatActivity {
             }
         }
 
-        // Adapter에게 데이터가 변경되었음을 알리기
         keywordAdapter.notifyDataSetChanged();
     }
 
+    private void addKeyword(String keyword) {
+        keywordList.add(keyword);
+        filterKeywords("");
+    }
 }
+
 
