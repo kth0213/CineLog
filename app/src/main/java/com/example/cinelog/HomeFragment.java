@@ -1,11 +1,14 @@
 package com.example.cinelog;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.PackageManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,6 +32,7 @@ import com.google.firebase.firestore.Query;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -182,6 +186,25 @@ public class HomeFragment extends Fragment {
 
                 })
                 .addOnFailureListener(e -> Log.e("Firestore", "Error fetching posts", e));
+
+        RecyclerView recyclerView = view.findViewById(R.id.app_recyclerview);
+
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+
+        List<AppItem> appItems = new ArrayList<>();
+        appItems.add(new AppItem("https://images.ctfassets.net/y2ske730sjqp/5QQ9SVIdc1tmkqrtFnG9U1/de758bba0f65dcc1c6bc1f31f161003d/BrandAssets_Logos_02-NSymbol.jpg?w=940", "com.netflix.mediaclient")); //Netflix
+        appItems.add(new AppItem("https://yt3.googleusercontent.com/pCcTLy8Zj7gIuo3yfYkB6cT2f0jz2beWJC5E4-B4ju9VBLdfrVDi6yc0B0313N8EVLY1UBaxxA=s900-c-k-c0x00ffffff-no-rj","com.frograms.wplay"));
+        appItems.add(new AppItem("https://yt3.googleusercontent.com/AwhuiDrnSIKzxLyp48jc5dyxj7YVdpwrj42s11o0slC0_sAOVQDDASFU9q3fDwan8UKEJP0Wew=s900-c-k-c0x00ffffff-no-rj","kr.co.captv.pooqV2"));
+        appItems.add(new AppItem("https://yt3.googleusercontent.com/y8xDKfp1aHjwej33BIhVNcaJnHgKke2jB6bHkrrpckJO7SxyFvvDpPRbIwO0kxGcZOnAOHkCfQ=s900-c-k-c0x00ffffff-no-rj","com.disney.disneyplus"));
+        appItems.add(new AppItem("https://play-lh.googleusercontent.com/IPu4haF4Jl9sMQ8TUEYJ4zUtN9pHJuxLOZzGHQcRPeT5ud07Y4sgUlB6ITaaxtbsPVA","com.coupang.mobile.play"));
+        appItems.add(new AppItem("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQB9WVNPJ67lWIeBlUJ5GNfo51fcRyYEHnuGQ&s", "com.amazon.avod.thirdpartyclient"));//Amazon
+
+        // 어댑터 설정
+        CircleImageAdapter ottadapter = new CircleImageAdapter(getContext(),appItems);
+        recyclerView.setAdapter(ottadapter);
+
+
     }
 
 
@@ -222,6 +245,84 @@ public class HomeFragment extends Fragment {
             super(itemView);
             imageView = itemView.findViewById(R.id.mylog_poster_image);
         }
+    }
+
+    public class CircleImageAdapter extends RecyclerView.Adapter<CircleImageAdapter.CircleViewHolder> {
+
+        private List<AppItem> appItems;
+        private Context context;
+
+        public CircleImageAdapter(Context context, List<AppItem> appItems) {
+            this.context = context;
+            this.appItems = appItems;
+        }
+
+        @NonNull
+        @Override
+        public CircleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_ott_circle_image, parent, false);
+            return new CircleViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull CircleViewHolder holder, int position) {
+            AppItem appItem = appItems.get(position);
+
+            // Glide를 사용하여 이미지 로드
+            Glide.with(context)
+                    .load(appItem.getImageUrl())
+                    .circleCrop()
+                    .into(holder.imageView);
+
+            // 클릭 이벤트 추가
+            holder.imageView.setOnClickListener(v -> {
+                String packageName = appItem.getPackageName();
+                openApp(packageName);
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return appItems.size();
+        }
+
+        public class CircleViewHolder extends RecyclerView.ViewHolder {
+            ImageView imageView;
+
+            public CircleViewHolder(@NonNull View itemView) {
+                super(itemView);
+                imageView = itemView.findViewById(R.id.imageViewCircle);
+            }
+        }
+
+        private void openApp(String packageName) {
+            try {
+                // 앱 실행을 위한 인텐트 생성
+                Intent intent = context.getPackageManager().getLaunchIntentForPackage(packageName);
+                if (intent != null) {
+                    context.startActivity(intent); // 앱 실행
+                } else {
+                    // 앱이 설치되어 있지 않을 경우 Play Store로 이동
+                    redirectToPlayStore(packageName);
+                }
+            } catch (Exception e) {
+                Log.e("CircleImageAdapter", "Error launching app: " + packageName, e);
+                redirectToPlayStore(packageName);
+            }
+        }
+
+        // Play Store로 리디렉션
+        private void redirectToPlayStore(String packageName) {
+            try {
+                // Play Store로 이동
+                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageName)));
+            } catch (android.content.ActivityNotFoundException e) {
+                // Play Store가 없을 경우 웹 브라우저로 이동
+                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + packageName)));
+            }
+        }
+
     }
 
 }
