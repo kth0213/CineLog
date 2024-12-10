@@ -102,6 +102,13 @@ public class CalendarFragment extends Fragment {
         listButton.setOnClickListener(view1 -> {
             startActivity(new Intent(getContext(), RatingListActivity.class));
         });
+
+        TextView calendarText = view.findViewById(R.id.calendar_text);
+        calendarText.setOnClickListener(view1 -> {
+            getParentFragmentManager().beginTransaction()
+                    .replace(getId(), new CustomCalendarFragment())
+                    .commit();
+        });
     }
 
     private void fetchMovies() {
