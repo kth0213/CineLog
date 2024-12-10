@@ -88,5 +88,13 @@
             </intent-filter>
         </activity>
     </application>
+    <queries>
+        <package android:name="com.netflix.mediaclient"/>
+        <package android:name="com.frograms.wplay"/>
+        <package android:name="kr.co.captv.pooqV2"/>
+        <package android:name="com.disney.disneyplus"/>
+        <package android:name="com.coupang.mobile.play"/>
+        <package android:name="com.amazon.avod.thirdpartyclient"/>
+    </queries>
 
 </manifest>
