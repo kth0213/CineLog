@@ -3,6 +3,7 @@ package com.example.cinelog;
 import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -63,7 +64,7 @@ public class KeywordSettingsActivity extends AppCompatActivity {
             requestNotificationPermission();
         }
 
-        btnBack.setOnClickListener(v -> finish());
+        btnBack.setOnClickListener(v -> onBackPressed());
 
         btnAddKeyword.setOnClickListener(v -> {
             String newKeyword = etNewKeyword.getText().toString().trim();
@@ -203,6 +204,12 @@ public class KeywordSettingsActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_POST_NOTIFICATIONS) {
@@ -213,7 +220,9 @@ public class KeywordSettingsActivity extends AppCompatActivity {
             }
         }
     }
+
 }
+
 
 
 

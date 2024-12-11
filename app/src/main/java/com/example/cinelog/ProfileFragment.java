@@ -119,5 +119,6 @@ public class ProfileFragment extends Fragment {
             profileImage.setImageURI(selectedImage);
         }
     }
+
 }
 
