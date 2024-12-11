@@ -32,8 +32,10 @@ public class ProfileFragment extends Fragment {
     public ProfileFragment() {
     }
 
-    public static Fragment newInstance(String param1, String param2) {
+    public static Fragment newInstance(String param1, String param2)
+    {
 
+        return null;
     }
 
     @Override
@@ -52,7 +54,7 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // View 연결
+
         profileImage = view.findViewById(R.id.profileImage);
         nickname = view.findViewById(R.id.nickname);
         ratingCount = view.findViewById(R.id.rating_count);

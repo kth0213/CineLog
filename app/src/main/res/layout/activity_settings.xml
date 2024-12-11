@@ -7,7 +7,7 @@
     android:padding="30dp"
     android:background="#242A32">
 
-    <!-- 상단 헤더 -->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
@@ -83,18 +83,18 @@
         android:gravity="center_vertical"
         android:paddingVertical="16dp">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="다크 모드"
-            android:textSize="18sp"
-            android:textColor="@android:color/white" />
+<!--        <TextView-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="다크 모드"-->
+<!--            android:textSize="18sp"-->
+<!--            android:textColor="@android:color/white" />-->
 
-        <Switch
-            android:id="@+id/darkModeSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+<!--        <Switch-->
+<!--            android:id="@+id/darkModeSwitch"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content" />-->
     </LinearLayout>
 
     <!-- 알림 설정 -->

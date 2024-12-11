@@ -30,7 +30,7 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
 
 
-        darkModeSwitch = findViewById(R.id.darkModeSwitch);
+//        darkModeSwitch = findViewById(R.id.darkModeSwitch);
         notificationSwitch = findViewById(R.id.notificationSwitch);
         manageAccountButton = findViewById(R.id.manageAccountButton);
         backButton = findViewById(R.id.back_button); // Back Button 초기화
