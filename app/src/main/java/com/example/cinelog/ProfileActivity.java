@@ -66,7 +66,7 @@ public class ProfileActivity extends AppCompatActivity {
                         commentsCountTextView.setText(String.valueOf(commentsCount));
                     }
                 } else {
-                    // 데이터 가져오기 실패 처리
+
                     usernameTextView.setText("실패");
                 }
             });
