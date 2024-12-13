@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -30,6 +31,8 @@ public class ProfileFragment extends Fragment {
     private TextView nickname, ratingCount, writingCount, commentCount;
     private Button keywordSettingsButton, logoutButton;
     private StorageReference storageRef;
+    private ImageButton settingButton;
+
 
     public ProfileFragment() {
     }
@@ -64,6 +67,7 @@ public class ProfileFragment extends Fragment {
         commentCount = view.findViewById(R.id.comment_count);
         keywordSettingsButton = view.findViewById(R.id.keyword_settingsButton);
         logoutButton = view.findViewById(R.id.logoutButton);
+        settingButton = view.findViewById(R.id.setting_button);
 
 
         loadUserData();
@@ -84,6 +88,12 @@ public class ProfileFragment extends Fragment {
             startActivity(new Intent(getActivity(), LogInActivity.class));
             getActivity().finish();
         });
+
+        settingButton.setOnClickListener(v -> {
+            startActivity(new Intent(getActivity(), SettingsActivity.class));
+        });
+
+
     }
 
     private void loadUserData() {

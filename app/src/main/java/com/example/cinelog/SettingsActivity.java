@@ -23,33 +23,18 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         sharedPreferences = getSharedPreferences("ThemePrefs", MODE_PRIVATE);
-        boolean isDarkMode = sharedPreferences.getBoolean("isDarkMode", false);
-        setTheme(isDarkMode ? R.style.Theme_Cinelog_Dark : R.style.Theme_Cinelog_Light);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
 
-//        darkModeSwitch = findViewById(R.id.darkModeSwitch);
         notificationSwitch = findViewById(R.id.notificationSwitch);
         manageAccountButton = findViewById(R.id.manageAccountButton);
         backButton = findViewById(R.id.back_button); // Back Button 초기화
 
 
         backButton.setOnClickListener(v -> {
-
-            Intent intent = new Intent(SettingsActivity.this, ProfileActivity.class);
-            startActivity(intent);
-            finish(); //
-        });
-
-
-        darkModeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean("isDarkMode", isChecked);
-            editor.apply();
-            Toast.makeText(this, "테마가 변경되었습니다. 앱을 다시 시작하세요.", Toast.LENGTH_SHORT).show();
-            recreate(); // 화면을 새로 고침
+            finish();
         });
 
 
@@ -62,6 +47,8 @@ public class SettingsActivity extends AppCompatActivity {
             Intent intent = new Intent(SettingsActivity.this, AccountManagementActivity.class);
             startActivity(intent);
         });
+
+
     }
 }
 

@@ -39,7 +39,7 @@ public class NavigationBar extends AppCompatActivity {
                     return true;
                 }
                 if(itemId == R.id.action_profile){
-                    transferTo(ProfileFragment.newInstance("param1","param2"));
+                    transferTo(new ProfileFragment());
                     return true;
                 }
                 return false;
