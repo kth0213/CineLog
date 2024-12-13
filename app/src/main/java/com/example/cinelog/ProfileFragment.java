@@ -57,7 +57,7 @@ public class ProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-        profileImage = view.findViewById(R.id.profileImage);
+
         nickname = view.findViewById(R.id.nickname);
         ratingCount = view.findViewById(R.id.rating_count);
         writingCount = view.findViewById(R.id.writing_count);
@@ -69,12 +69,6 @@ public class ProfileFragment extends Fragment {
 
         loadUserData();
         loadUserStatistics();
-
-
-        profileImage.setOnClickListener(v -> {
-            Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(pickPhoto, 1);
-        });
 
 
         keywordSettingsButton.setOnClickListener(v -> startActivity(new Intent(getActivity(), KeywordSettingsActivity.class)));

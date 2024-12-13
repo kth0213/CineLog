@@ -63,9 +63,9 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="UserName"
+            android:textColor="@color/white"
             android:textSize="22sp"
-            android:textStyle="bold"
-            android:textColor="@color/white" />
+            android:textStyle="bold" />
 
         <ImageButton
             android:id="@+id/edit_nickname_button"

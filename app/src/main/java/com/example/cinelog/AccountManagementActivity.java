@@ -6,9 +6,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FieldValue;
 
 public class AccountManagementActivity extends AppCompatActivity {
 
@@ -47,13 +49,21 @@ public class AccountManagementActivity extends AppCompatActivity {
 
 
         deleteAccountButton.setOnClickListener(v -> {
-            mAuth.getCurrentUser().delete();
-            Toast.makeText(this, "계정이 삭제되었습니다. 다시 시작하세요.", Toast.LENGTH_SHORT).show();
-            // Log the user out and navigate to the main activity
-            Intent intent = new Intent(AccountManagementActivity.this, LogInActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            finish();
+            new AlertDialog.Builder(AccountManagementActivity.this)
+                    .setTitle("삭제 확인")
+                    .setPositiveButton("예",(dialog, which) -> {
+                        mAuth.getCurrentUser().delete();
+                        Toast.makeText(this, "계정이 삭제되었습니다. 다시 시작하세요.", Toast.LENGTH_SHORT).show();
+                        // Log the user out and navigate to the main activity
+                        Intent intent = new Intent(AccountManagementActivity.this, LogInActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
+                    })
+                    .setNegativeButton("아니오",(dialog,which) -> {
+                        dialog.dismiss();
+                    })
+                    .show();
         });
     }
 }
