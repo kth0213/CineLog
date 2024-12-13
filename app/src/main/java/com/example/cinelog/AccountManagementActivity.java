@@ -2,6 +2,7 @@ package com.example.cinelog;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -9,8 +10,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class AccountManagementActivity extends AppCompatActivity {
 
@@ -19,6 +22,7 @@ public class AccountManagementActivity extends AppCompatActivity {
     private Button changePasswordButton;
     private Button deleteAccountButton;
     private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +30,8 @@ public class AccountManagementActivity extends AppCompatActivity {
         setContentView(R.layout.activity_account_management);
 
         mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+        String uid = mAuth.getCurrentUser().getUid();
 
         usernameTextView = findViewById(R.id.usernameTextView);
         emailTextView = findViewById(R.id.emailTextView);
@@ -33,12 +39,19 @@ public class AccountManagementActivity extends AppCompatActivity {
         deleteAccountButton = findViewById(R.id.deleteAccountButton);
 
 
-        String username = "SoongsilKim1897";
-        String email = "soongsilkim@example.com";
+        db.collection("users").document(uid).get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                String userNickname = documentSnapshot.getString("nickname");
+                String userEmail = documentSnapshot.getString("email");
+
+                // 닉네임 설정
+                usernameTextView.setText(userNickname);
+                emailTextView.setText(userEmail);
+
+            }
+        }).addOnFailureListener(e -> Log.e("Firestore", "사용자 데이터 가져오기 오류: ", e));
 
 
-        usernameTextView.setText(username);
-        emailTextView.setText(email);
 
         // Change Password Button
 //        changePasswordButton.setOnClickListener(v -> {
