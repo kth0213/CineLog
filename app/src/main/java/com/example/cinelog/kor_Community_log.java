@@ -194,6 +194,7 @@ public class kor_Community_log extends AppCompatActivity {
                     .add(comment)
                     .addOnSuccessListener(documentReference -> {
                         commentEditText.setText(""); // 입력창 초기화
+                        db.collection("posts").document(postid).update("commentCount", FieldValue.increment(1));
                         Toast.makeText(this, "댓글이 추가되었습니다.", Toast.LENGTH_SHORT).show();
                     })
                     .addOnFailureListener(e -> {

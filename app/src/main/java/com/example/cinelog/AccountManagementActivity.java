@@ -6,7 +6,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FieldValue;
 
 public class AccountManagementActivity extends AppCompatActivity {
 
@@ -14,16 +18,18 @@ public class AccountManagementActivity extends AppCompatActivity {
     private TextView emailTextView;
     private Button changePasswordButton;
     private Button deleteAccountButton;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_management);
 
+        mAuth = FirebaseAuth.getInstance();
 
         usernameTextView = findViewById(R.id.usernameTextView);
         emailTextView = findViewById(R.id.emailTextView);
-        changePasswordButton = findViewById(R.id.changePasswordButton);
+        //changePasswordButton = findViewById(R.id.changePasswordButton);
         deleteAccountButton = findViewById(R.id.deleteAccountButton);
 
 
@@ -43,13 +49,21 @@ public class AccountManagementActivity extends AppCompatActivity {
 
 
         deleteAccountButton.setOnClickListener(v -> {
-            // Placeholder for delete account logic
-            Toast.makeText(this, "계정이 삭제되었습니다. 다시 시작하세요.", Toast.LENGTH_SHORT).show();
-            // Log the user out and navigate to the main activity
-            Intent intent = new Intent(AccountManagementActivity.this, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            finish();
+            new AlertDialog.Builder(AccountManagementActivity.this)
+                    .setTitle("삭제 확인")
+                    .setPositiveButton("예",(dialog, which) -> {
+                        mAuth.getCurrentUser().delete();
+                        Toast.makeText(this, "계정이 삭제되었습니다. 다시 시작하세요.", Toast.LENGTH_SHORT).show();
+                        // Log the user out and navigate to the main activity
+                        Intent intent = new Intent(AccountManagementActivity.this, LogInActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
+                    })
+                    .setNegativeButton("아니오",(dialog,which) -> {
+                        dialog.dismiss();
+                    })
+                    .show();
         });
     }
 }

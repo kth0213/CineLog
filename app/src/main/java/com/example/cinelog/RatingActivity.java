@@ -1,11 +1,13 @@
 package com.example.cinelog;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -15,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.example.cinelog.databinding.ActivityRatingBinding;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -86,6 +89,7 @@ public class RatingActivity extends AppCompatActivity {
         EditText friendEditText = binding.friend;
         EditText memoEditText = binding.memo;
         Button saveButton = binding.saveButton;
+        ImageButton deleteButton = binding.deleteButton;
         dateEditText.setOnClickListener(view -> {
             Calendar calendar = Calendar.getInstance();
             MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker()
@@ -127,7 +131,11 @@ public class RatingActivity extends AppCompatActivity {
 
             db.collection("users/"+mAuth.getUid()+"/ratings").document(binding.title.getText().toString())
                     .set(allData)
-                    .addOnSuccessListener(aVoid -> Log.d("Firestore", "Data saved successfully"))
+                    .addOnSuccessListener(aVoid -> {
+                                Log.d("Firestore", "Data saved successfully");
+                                db.collection("users").document(mAuth.getUid()).update("ratingsCount", FieldValue.increment(1));
+                            }
+                    )
                     .addOnFailureListener(e -> Log.w("Firestore", "Error saving data", e));
 
             Intent intentToRatingList = new Intent(this, NavigationBar.class)
@@ -137,6 +145,21 @@ public class RatingActivity extends AppCompatActivity {
 
         binding.backButton.setOnClickListener(view -> {
             finish();
+        });
+
+        deleteButton.setOnClickListener(view -> {
+            new AlertDialog.Builder(RatingActivity.this)
+                    .setTitle("삭제 확인")
+                            .setPositiveButton("예",(dialog, which) -> {
+                                db.collection("users/"+mAuth.getUid()+"/ratings").document(binding.title.getText().toString())
+                                        .delete();
+                                db.collection("users").document(mAuth.getUid()).update("ratingsCount", FieldValue.increment(-1));
+                                startActivity(new Intent(this, NavigationBar.class));
+                            })
+                    .setNegativeButton("아니오",(dialog,which) -> {
+                        dialog.dismiss();
+                    })
+                    .show();
         });
     }
 }

@@ -96,6 +96,7 @@ public class Writing_Activity extends AppCompatActivity {
 
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(this, "게시물이 작성되었습니다.", Toast.LENGTH_SHORT).show();
+                    db.collection("users").document(mAuth.getUid()).update("postsCount", FieldValue.increment(1));
                     finish(); // 액티비티 종료
                 })
                 .addOnFailureListener(e -> {
