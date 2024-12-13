@@ -24,6 +24,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -72,24 +73,95 @@ public class kor_Community_log extends AppCompatActivity {
         TextView authorText = findViewById(R.id.log_author);
         TextView timeText = findViewById(R.id.log_time);
 
+        ImageView author_image = findViewById(R.id.author_image);
+
         // kor_Comunity에서 준 인텐트로 내용 가져오기
         Intent intent = getIntent();
 
-        String title = intent.getStringExtra("title");
-        String cotent = intent.getStringExtra("content");
-        String author = intent.getStringExtra("author");
-        timestamp = intent.getStringExtra("timestamp");
-
-
-        // 저장할 게시물 id 따로 받기
+//        String title = intent.getStringExtra("title");
+//        String cotent = intent.getStringExtra("content");
+//        String author = intent.getStringExtra("author");
+//        String profileUrl = intent.getStringExtra("profileUrl");
+//        Log.d("kor_Community_log", "Profile URL received: " + profileUrl);
+//        timestamp = intent.getStringExtra("timestamp");
+//
+//
+//        // 저장할 게시물 id 따로 받기
         postid = intent.getStringExtra("id");
+//
+//
+//        //내용 설정
+//        titleText.setText(title);
+//        contentText.setText(cotent);
+//        authorText.setText(author);
+//        timeText.setText(timestamp);
+//
+//        if (profileUrl != null && !profileUrl.isEmpty()) {
+//            Glide.with(this)
+//                    .load(profileUrl) // Firestore에 저장된 URL
+//                    .placeholder(R.drawable.rounded_image) // 로딩 중 기본 이미지
+//                    .error(R.drawable.baseline_block_24) // 오류 발생 시 이미지
+//                    .circleCrop() // 둥근 이미지로 자르기
+//                    .into(author_image); // ImageView에 로드
+//        } else {
+//            author_image.setImageResource(R.drawable.baseline_calendar_today_24); // URL이 없을 경우 기본 이미지
+//        }
+        db.collection("posts").document(postid)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        // 게시물 데이터 설정
+                        String title = documentSnapshot.getString("title");
+                        String content = documentSnapshot.getString("content");
+                        String author = documentSnapshot.getString("author");
+                        String profileUrl = documentSnapshot.getString("profileImageUrl");
+                        Timestamp timestamp = documentSnapshot.getTimestamp("timestamp");
+
+                        titleText.setText(title);
+                        contentText.setText(content);
+                        authorText.setText(author);
+
+                        if (timestamp != null) {
+                            Date date = timestamp.toDate();
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("yy.MM.dd HH:mm", Locale.getDefault());
+                            timeText.setText(dateFormat.format(date));
+                        }
+
+                        // 프로필 이미지 설정
+                        if (profileUrl != null && !profileUrl.isEmpty()) {
+                            Glide.with(this)
+                                    .load(profileUrl)
+                                    .placeholder(R.drawable.rounded_image) // 로딩 중 기본 이미지
+                                    .error(R.drawable.baseline_block_24) // 오류 발생 시 기본 이미지
+                                    .circleCrop() // 둥글게 자르기
+                                    .into(author_image);
+                        } else {
+                            author_image.setImageResource(R.drawable.baseline_calendar_today_24); // 기본 이미지
+                        }
+                    } else {
+                        Toast.makeText(this, "게시물 데이터를 불러올 수 없습니다.", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "게시물을 불러오는 중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                    finish();
+                });
 
 
-        //내용 설정
-        titleText.setText(title);
-        contentText.setText(cotent);
-        authorText.setText(author);
-        timeText.setText(timestamp);
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         // 댓글 리사이클러뷰 설정

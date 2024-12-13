@@ -26,6 +26,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
@@ -186,11 +187,15 @@ public class kor_Community extends AppCompatActivity {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yy.M.d HH:mm", Locale.getDefault());
                     String formattedDate = dateFormat.format(date);
 
+
+
                     intent.putExtra("title",post.getTitle());
                     intent.putExtra("content",post.getContent());
                     intent.putExtra("author",post.getAuthor());
                     intent.putExtra("timestamp",formattedDate);
                     intent.putExtra("id",post.getId());
+                    intent.putExtra("profileImageUrl", post.getProfileUrl());
+                    Log.d("kor_Community", "Profile URL: " + post.getProfileUrl());
 
 
                     view.getContext().startActivity(intent);
@@ -217,6 +222,7 @@ public class kor_Community extends AppCompatActivity {
 
         public  class PostViewHolder extends RecyclerView.ViewHolder {
             TextView title, author, timestamp;
+            ImageView imageView;
 
             public PostViewHolder(@NonNull View itemView) {
                 super(itemView);
@@ -224,6 +230,7 @@ public class kor_Community extends AppCompatActivity {
                 title = itemView.findViewById(R.id.com_title);
                 author = itemView.findViewById(R.id.com_author);
                 timestamp = itemView.findViewById(R.id.com_time);
+
 
 
             }

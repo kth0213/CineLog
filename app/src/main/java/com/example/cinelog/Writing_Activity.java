@@ -28,6 +28,7 @@ public class Writing_Activity extends AppCompatActivity {
     private CheckBox checkBox;
     private Button button;
     private String nickname;
+    private String profileImageUrl;
 
 
     @Override
@@ -51,6 +52,7 @@ public class Writing_Activity extends AppCompatActivity {
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
                         nickname = documentSnapshot.getString("nickname");
+                        profileImageUrl = documentSnapshot.getString("profileImageUrl");
                     }
                 })
                 .addOnFailureListener(e -> Log.e("Error", "Failed to fetch nickname", e));
@@ -66,7 +68,7 @@ public class Writing_Activity extends AppCompatActivity {
                     return;
                 }
 
-                savePostToFirestore(title, content, spoiler,nickname);
+                savePostToFirestore(title, content, spoiler,nickname,profileImageUrl);
 
                 finish();
             }
@@ -80,7 +82,7 @@ public class Writing_Activity extends AppCompatActivity {
 
 
     }
-    private void savePostToFirestore(String title, String content, boolean isSpoiler, String nickname) {
+    private void savePostToFirestore(String title, String content, boolean isSpoiler, String nickname, String profileImageUrl) {
 
         String postId = db.collection("posts").document().getId(); // 고유 ID 생성
         Map<String, Object> post = new HashMap<>();
@@ -89,6 +91,7 @@ public class Writing_Activity extends AppCompatActivity {
         post.put("isSpoiler", isSpoiler); // 스포일러 여부 추가
         post.put("timestamp", FieldValue.serverTimestamp()); // 서버 시간 사용
         post.put("author",nickname);
+        post.put("profileImageUrl", profileImageUrl);
         post.put("id",postId);
 
         db.collection("posts").document(postId)

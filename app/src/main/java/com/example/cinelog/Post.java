@@ -10,18 +10,20 @@ public class Post {
     private boolean isSpoiler; // 스포일러 여부
     private Timestamp timestamp; // 작성 시간 (ISO 8601 형식)
     private String author;    // 작성자 ID (선택 사항)
+    private String profileImageUrl;
 
 
     // Firestore에서 객체를 생성하기 위해 기본 생성자가 필요함
     public Post() {}
 
     // 모든 필드를 포함하는 생성자
-    public Post(String title, String content, boolean isSpoiler, Timestamp timestamp, String author) {
+    public Post(String title, String content, boolean isSpoiler, Timestamp timestamp, String author, String profileImageUrl) {
         this.title = title;
         this.content = content;
         this.isSpoiler = isSpoiler;
         this.timestamp = timestamp;
         this.author = author;
+        this.profileImageUrl = profileImageUrl;
     }
 
     // Getter와 Setter
@@ -70,5 +72,13 @@ public class Post {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public String getProfileUrl() {
+        return profileImageUrl;
+    }
+
+    public void setProfileUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
     }
 }

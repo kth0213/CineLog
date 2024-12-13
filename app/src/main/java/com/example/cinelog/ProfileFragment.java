@@ -13,10 +13,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -24,26 +26,20 @@ public class ProfileFragment extends Fragment {
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
     private ImageView profileImage;
     private TextView nickname, ratingCount, writingCount, commentCount;
     private Button keywordSettingsButton, logoutButton;
+    private ImageButton settingButton;
 
     public ProfileFragment() {
-
     }
 
-    public static ProfileFragment newInstance(String param1, String param2) {
-        ProfileFragment fragment = new ProfileFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    public static Fragment newInstance(String param1, String param2)
+    {
 
+        return null;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,24 +57,20 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // View 연결
-        profileImage = view.findViewById(R.id.profileImage);
+
+
         nickname = view.findViewById(R.id.nickname);
         ratingCount = view.findViewById(R.id.rating_count);
         writingCount = view.findViewById(R.id.writing_count);
         commentCount = view.findViewById(R.id.comment_count);
         keywordSettingsButton = view.findViewById(R.id.keyword_settingsButton);
         logoutButton = view.findViewById(R.id.logoutButton);
+        settingButton = view.findViewById(R.id.setting_button);
+        profileImage = view.findViewById(R.id.profileImage);
 
 
         loadUserData();
         loadUserStatistics();
-
-
-        profileImage.setOnClickListener(v -> {
-            Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(pickPhoto, 1);
-        });
 
 
         keywordSettingsButton.setOnClickListener(v -> startActivity(new Intent(getActivity(), KeywordSettingsActivity.class)));
@@ -89,6 +81,12 @@ public class ProfileFragment extends Fragment {
             startActivity(new Intent(getActivity(), LogInActivity.class));
             getActivity().finish();
         });
+
+        settingButton.setOnClickListener(v -> {
+            startActivity(new Intent(getActivity(), SettingsActivity.class));
+        });
+
+
     }
 
     private void loadUserData() {
@@ -96,8 +94,19 @@ public class ProfileFragment extends Fragment {
 
         db.collection("users").document(uid).get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
+                // 닉네임 설정
                 String userNickname = documentSnapshot.getString("nickname");
                 nickname.setText(userNickname != null ? userNickname : "Anonymous");
+
+                // 프로필 이미지 로드
+                String profileImageUrl = documentSnapshot.getString("profileImageUrl");
+                if (profileImageUrl != null) {
+                    Glide.with(this)
+                            .load(profileImageUrl)
+                            .circleCrop() // 이미지를 둥글게 처리
+                            .placeholder(R.drawable.rounded_image) // 로딩 중 보여줄 기본 이미지 (옵션)
+                            .into(profileImage);
+                }
             }
         }).addOnFailureListener(e -> Log.e("Firestore", "사용자 데이터 가져오기 오류: ", e));
     }
@@ -126,5 +135,5 @@ public class ProfileFragment extends Fragment {
             profileImage.setImageURI(selectedImage);
         }
     }
-}
 
+}

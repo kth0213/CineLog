@@ -93,6 +93,12 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        ConstraintLayout forCommunityLayout = view.findViewById(R.id.for_constraintLayout);
+
+
+
+
+
         ImageView searchbutton = view.findViewById(R.id.search_button);
 
         searchbutton.setOnClickListener(new View.OnClickListener() {
