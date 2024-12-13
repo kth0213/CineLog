@@ -86,9 +86,9 @@ public class SignUpActivity extends AppCompatActivity {
             userData.put("email", user.getEmail());
             userData.put("createdAt", System.currentTimeMillis());
             userData.put("nickname", user.getEmail());
-            userData.put("commentsCount", 0);
-            userData.put("postsCount",0);
-            userData.put("ratingsCount", 0);
+            userData.put("commentsCount", new Long(0));
+            userData.put("postsCount",new Long(0));
+            userData.put("ratingsCount", new Long(0));
 
             // Firestore에 사용자 데이터 저장
             db.collection("users").document(uid)
