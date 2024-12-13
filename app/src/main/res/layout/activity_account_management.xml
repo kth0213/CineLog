@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#242A32"
     android:padding="16dp">
 
 
@@ -12,6 +13,7 @@
         android:text="계정 관리"
         android:textSize="24sp"
         android:textStyle="bold"
+        android:textColor="@color/white"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="24dp" />
 
@@ -26,12 +28,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="사용자 이름"
+            android:textColor="@color/white"
             android:textSize="18sp" />
         <TextView
             android:id="@+id/usernameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
+            android:textColor="@color/white"
             android:text="Placeholder" />
     </LinearLayout>
 
@@ -46,22 +50,24 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="이메일"
+            android:textColor="@color/white"
             android:textSize="18sp" />
         <TextView
             android:id="@+id/emailTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
+            android:textColor="@color/white"
             android:text="Placeholder" />
     </LinearLayout>
 
 
-    <Button
-        android:id="@+id/changePasswordButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="비밀번호 변경"
-        android:layout_marginBottom="16dp" />
+<!--    <Button-->
+<!--        android:id="@+id/changePasswordButton"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="비밀번호 변경"-->
+<!--        android:layout_marginBottom="16dp" />-->
 
     <Button
         android:id="@+id/deleteAccountButton"

@@ -8,22 +8,26 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class AccountManagementActivity extends AppCompatActivity {
 
     private TextView usernameTextView;
     private TextView emailTextView;
     private Button changePasswordButton;
     private Button deleteAccountButton;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_management);
 
+        mAuth = FirebaseAuth.getInstance();
 
         usernameTextView = findViewById(R.id.usernameTextView);
         emailTextView = findViewById(R.id.emailTextView);
-        changePasswordButton = findViewById(R.id.changePasswordButton);
+        //changePasswordButton = findViewById(R.id.changePasswordButton);
         deleteAccountButton = findViewById(R.id.deleteAccountButton);
 
 
@@ -43,10 +47,10 @@ public class AccountManagementActivity extends AppCompatActivity {
 
 
         deleteAccountButton.setOnClickListener(v -> {
-            // Placeholder for delete account logic
+            mAuth.getCurrentUser().delete();
             Toast.makeText(this, "계정이 삭제되었습니다. 다시 시작하세요.", Toast.LENGTH_SHORT).show();
             // Log the user out and navigate to the main activity
-            Intent intent = new Intent(AccountManagementActivity.this, MainActivity.class);
+            Intent intent = new Intent(AccountManagementActivity.this, LogInActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();
