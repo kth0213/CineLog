@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.StorageReference;
 
 public class ProfileFragment extends Fragment {
 
@@ -28,6 +29,7 @@ public class ProfileFragment extends Fragment {
     private ImageView profileImage;
     private TextView nickname, ratingCount, writingCount, commentCount;
     private Button keywordSettingsButton, logoutButton;
+    private StorageReference storageRef;
 
     public ProfileFragment() {
     }
@@ -117,8 +119,26 @@ public class ProfileFragment extends Fragment {
         if (requestCode == 1 && resultCode == getActivity().RESULT_OK && data != null) {
             Uri selectedImage = data.getData();
             profileImage.setImageURI(selectedImage);
+            
+
+            String uid = mAuth.getCurrentUser().getUid();
+
+            StorageReference profileImageRef = storageRef.child("profile_images/" + uid + ".jpg");
+
+            profileImageRef.putFile(selectedImage)
+                    .addOnSuccessListener(taskSnapshot -> {
+                        profileImageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                            String imageUrl = uri.toString();
+
+                            db.collection("users").document(uid)
+                                    .update("profileImageUrl", imageUrl)
+                                    .addOnSuccessListener(aVoid -> Log.d("Firestore", "프로필 이미지 URL 저장 성공"))
+                                    .addOnFailureListener(e -> Log.e("Firestore", "프로필 이미지 URL 저장 실패: ", e));
+                        });
+                    })
+                    .addOnFailureListener(e -> Log.e("Storage", "이미지 업로드 실패: ", e));
         }
     }
-
 }
+
 
