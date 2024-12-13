@@ -13,6 +13,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -21,6 +22,7 @@ import java.util.Map;
 
 public class Writing_Activity extends AppCompatActivity {
     private FirebaseFirestore db;
+    private FirebaseAuth mAuth;
     private EditText editTitle, editContent;
     private CheckBox checkBox;
     private Button button;
@@ -32,6 +34,7 @@ public class Writing_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_writing);
 
         db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
         editTitle = findViewById(R.id.edit_title);
         editContent = findViewById(R.id.edit_content);
@@ -65,8 +68,8 @@ public class Writing_Activity extends AppCompatActivity {
         Map<String, Object> post = new HashMap<>();
         post.put("title", title);
         post.put("content", content);
-        post.put("isSpoiler", isSpoiler); // 스포일러 여부 추가
-        post.put("timestamp", FieldValue.serverTimestamp()); // 서버 시간 사용
+        post.put("isSpoiler", isSpoiler);
+        post.put("timestamp", FieldValue.serverTimestamp());
         post.put("id",postId);
 
         db.collection("posts").document(postId)
@@ -74,6 +77,7 @@ public class Writing_Activity extends AppCompatActivity {
 
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(this, "게시물이 작성되었습니다.", Toast.LENGTH_SHORT).show();
+                    db.collection("users").document(mAuth.getUid()).update("postsCount", FieldValue.increment(1));
                     finish(); // 액티비티 종료
                 })
                 .addOnFailureListener(e -> {
@@ -81,4 +85,6 @@ public class Writing_Activity extends AppCompatActivity {
                     e.printStackTrace();
                 });
     }
+
+
 }
