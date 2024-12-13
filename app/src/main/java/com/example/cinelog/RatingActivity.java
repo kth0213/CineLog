@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.example.cinelog.databinding.ActivityRatingBinding;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -127,7 +128,11 @@ public class RatingActivity extends AppCompatActivity {
 
             db.collection("users/"+mAuth.getUid()+"/ratings").document(binding.title.getText().toString())
                     .set(allData)
-                    .addOnSuccessListener(aVoid -> Log.d("Firestore", "Data saved successfully"))
+                    .addOnSuccessListener(aVoid -> {
+                                Log.d("Firestore", "Data saved successfully");
+                                db.collection("users").document(mAuth.getUid()).update("ratingsCount", FieldValue.increment(1));
+                            }
+                    )
                     .addOnFailureListener(e -> Log.w("Firestore", "Error saving data", e));
 
             Intent intentToRatingList = new Intent(this, NavigationBar.class)
