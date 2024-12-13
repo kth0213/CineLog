@@ -64,6 +64,8 @@
             android:layout_height="40dp"
             android:layout_marginEnd="4dp"
             android:queryHint="제목을 입력하세요"
+            style="@style/CustomSearchView"
+
 
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/rectangle_"
@@ -73,15 +75,7 @@
 
         </SearchView>
 
-        <Spinner
-            android:id="@+id/action_bar_spinner"
-            android:layout_width="50dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="44dp"
-            android:layout_marginEnd="360dp"
-            android:entries="@array/option"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

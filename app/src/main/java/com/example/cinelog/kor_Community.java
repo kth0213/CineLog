@@ -1,5 +1,7 @@
 package com.example.cinelog;
 
+import static java.security.AccessController.getContext;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.icu.text.SimpleDateFormat;
@@ -25,6 +27,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
@@ -232,11 +235,20 @@ public class kor_Community extends AppCompatActivity {
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
+
+                        String voteTitle = documentSnapshot.getString("title");
+                        TextView voteTitleTextView = findViewById(R.id.vote_title); // 제목 표시 TextView
+                        if (voteTitle != null) {
+                            voteTitleTextView.setText(voteTitle);
+                        }
+
                         List<Map<String, Object>> optionData = (List<Map<String, Object>>) documentSnapshot.get("options");
                         if (optionData != null) {
                             List<String> titles = new ArrayList<>();
                             List<Integer> votes = new ArrayList<>();
                             int totalVotes = 0;
+
+
 
                             for (Map<String, Object> option : optionData) {
                                 String title = (String) option.get("title");
@@ -253,6 +265,8 @@ public class kor_Community extends AppCompatActivity {
                     }
                 })
                 .addOnFailureListener(Throwable::printStackTrace);
+
+
     }
 
     private void updatePieChart(List<String> titles, List<Integer> votes) {
@@ -263,27 +277,22 @@ public class kor_Community extends AppCompatActivity {
             entries.add(new PieEntry(votes.get(i), titles.get(i)));
         }
 
-        PieDataSet dataSet = new PieDataSet(entries, "투표 결과");
-        dataSet.setColors(ColorTemplate.MATERIAL_COLORS); // 기본 색상 템플릿
+        PieDataSet dataSet = new PieDataSet(entries, "");
+        dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+         // 기본 색상 템플릿
         dataSet.setValueTextSize(12f);
 
         PieData data = new PieData(dataSet);
         pieChart.setData(data);
+
+        Legend legend = pieChart.getLegend();
+        legend.setTextColor(Color.WHITE);
+
+
         pieChart.invalidate(); // 새로 고침
     }
 
-//    private void updateTextResults(List<String> titles, List<Integer> votes, int totalVotes) {
-//        TextView resultTextView = findViewById(R.id.ranking_1);
-//        StringBuilder resultText = new StringBuilder();
-//
-//        for (int i = 0; i < titles.size(); i++) {
-//            float percentage = (votes.get(i) / (float) totalVotes) * 100;
-//            resultText.append(String.format(Locale.getDefault(), "%s: %d표 (%.1f%%)\n", titles.get(i), votes.get(i), percentage));
-//        }
-//
-//        resultTextView.setText(resultText.toString());
-//        resultTextView.setVisibility(View.VISIBLE);
-//    }
+
 }
 
 

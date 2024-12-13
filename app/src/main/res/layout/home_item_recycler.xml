@@ -38,11 +38,10 @@
                 android:id="@+id/moive_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="116dp"
                 android:layout_marginTop="16dp"
                 android:text="영화 제목"
                 android:textColor="#FFFFFF"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.351"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,12 +49,11 @@
                 android:id="@+id/moive_director"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="140dp"
                 android:layout_marginTop="40dp"
                 android:text="영화 감독"
                 android:textColor="#FFFFFF"
                 android:textSize="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.39"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -63,15 +61,13 @@
                 android:id="@+id/moive_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="140dp"
                 android:layout_marginTop="58dp"
                 android:text="영화 시간"
                 android:textColor="#FFFFFF"
                 android:textSize="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.39"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
 
             <ImageView
                 android:id="@+id/movie_button"
@@ -88,7 +84,7 @@
                 android:layout_width="16dp"
                 android:layout_height="15dp"
                 android:layout_marginStart="116dp"
-                android:layout_marginTop="58dp"
+                android:layout_marginTop="40dp"
                 android:background="@drawable/baseline_local_movies_24"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -97,7 +93,7 @@
                 android:layout_width="16dp"
                 android:layout_height="15dp"
                 android:layout_marginStart="116dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="58dp"
                 android:background="@drawable/baseline_access_time_24"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

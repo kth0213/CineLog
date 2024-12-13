@@ -28,4 +28,12 @@
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">#FFFFFF</item>
     </style>
+
+
+        <style name="CustomSearchView" parent="Widget.AppCompat.SearchView">
+            <item name="queryBackground">@android:color/transparent</item> <!-- 배경 투명 -->
+            <item name="android:textColor">#FFFFFF</item> <!-- 텍스트 색상 -->
+            <item name="android:textColorHint">#FFFFFF</item> <!-- 힌트 색상 -->
+        </style>
+
 </resources>

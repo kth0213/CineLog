@@ -24,19 +24,26 @@ public class ProfileFragment extends Fragment {
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
 
     private ImageView profileImage;
     private TextView nickname, ratingCount, writingCount, commentCount;
     private Button keywordSettingsButton, logoutButton;
 
     public ProfileFragment() {
+
     }
 
-    public static Fragment newInstance(String param1, String param2)
-    {
-
-        return null;
+    public static ProfileFragment newInstance(String param1, String param2) {
+        ProfileFragment fragment = new ProfileFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,7 +61,7 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
+        // View 연결
         profileImage = view.findViewById(R.id.profileImage);
         nickname = view.findViewById(R.id.nickname);
         ratingCount = view.findViewById(R.id.rating_count);
@@ -119,6 +126,5 @@ public class ProfileFragment extends Fragment {
             profileImage.setImageURI(selectedImage);
         }
     }
-
 }
 

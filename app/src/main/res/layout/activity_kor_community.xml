@@ -50,6 +50,16 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:id="@+id/vote_title"
+            android:layout_width="257dp"
+            android:layout_height="30dp"
+            android:layout_above="@+id/vote_layout"
+            android:layout_centerHorizontal="true"
+            android:text="투표거리 제목입니다."
+            android:textColor="#FFFFFF"
+            android:gravity="center"/>
+
+        <TextView
             android:id="@+id/some_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -69,33 +79,38 @@
             android:text="투표하기" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/vote_layout"
             android:layout_width="match_parent"
             android:layout_height="230dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="-1dp">
+            android:layout_marginBottom="-1dp"
+            android:background="#3A3F47">
 
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/vote_result_pie_chart"
                 android:layout_width="300dp"
                 android:layout_height="match_parent"
-                android:layout_marginStart="4dp"
+                android:layout_marginStart="32dp"
                 android:layout_marginTop="4dp"
                 android:layout_weight="1"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
 
 
-<!--            <TextView-->
-<!--                android:id="@+id/ranking_1"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="12dp"-->
-<!--                android:layout_marginTop="16dp"-->
-<!--                android:text="1위: 영화 제목 - 50%"-->
-<!--                android:textColor="#000000"-->
-<!--                android:textSize="16sp"-->
-<!--                app:layout_constraintStart_toEndOf="@+id/vote_result_pie_chart"-->
-<!--                app:layout_constraintTop_toTopOf="parent" />-->
+            </com.github.mikephil.charting.charts.PieChart>
+
+
+            <!--            <TextView-->
+            <!--                android:id="@+id/ranking_1"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginStart="12dp"-->
+            <!--                android:layout_marginTop="16dp"-->
+            <!--                android:text="1위: 영화 제목 - 50%"-->
+            <!--                android:textColor="#000000"-->
+            <!--                android:textSize="16sp"-->
+            <!--                app:layout_constraintStart_toEndOf="@+id/vote_result_pie_chart"-->
+            <!--                app:layout_constraintTop_toTopOf="parent" />-->
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

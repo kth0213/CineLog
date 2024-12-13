@@ -3,11 +3,13 @@ package com.example.cinelog;
 import android.content.Context;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -51,6 +53,16 @@ public class Home_SearchActivity extends AppCompatActivity {
         });
 
         SearchView searchView = binding.searchView;
+
+
+        int searchEditTextId = searchView.getContext().getResources()
+                .getIdentifier("android:id/search_src_text", null, null);
+        EditText searchEditText = searchView.findViewById(searchEditTextId);
+
+        if (searchEditText != null) {
+            searchEditText.setTextColor(Color.WHITE); // 텍스트 색상
+            searchEditText.setHintTextColor(Color.GRAY); // 힌트 색상
+        }
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
