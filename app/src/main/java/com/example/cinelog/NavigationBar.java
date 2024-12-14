@@ -87,6 +87,9 @@ public class NavigationBar extends AppCompatActivity {
             if(getIntent().getStringExtra("fragment").equals("CalendarFragment")) {
                 transferTo(CalendarFragment.newInstance("param1","param2"));
                 bottomNavigationView.setSelectedItemId(R.id.action_calendar);
+            } else if (getIntent().getStringExtra("fragment").equals("ProfileFragment")) {
+                transferTo(new ProfileFragment());
+                bottomNavigationView.setSelectedItemId(R.id.action_profile);
             }
         }
         else {

@@ -32,7 +32,7 @@ public class SettingsActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1; // 이미지 선택 요청 코드
 
     private Switch darkModeSwitch;
-    private Switch notificationSwitch;
+//    private Switch notificationSwitch;
     private Button manageAccountButton;
     private ImageButton editNickname;
     private ImageButton backButton; // Back Button 추가
@@ -60,7 +60,7 @@ public class SettingsActivity extends AppCompatActivity {
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference();
 
-        notificationSwitch = findViewById(R.id.notificationSwitch);
+//        notificationSwitch = findViewById(R.id.notificationSwitch);
         manageAccountButton = findViewById(R.id.manageAccountButton);
         backButton = findViewById(R.id.back_button); // Back Button 초기화
         editNickname = findViewById(R.id.edit_nickname_button);
@@ -92,12 +92,15 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
         backButton.setOnClickListener(v -> {
-            finish();
+            Intent intentToProfileList = new Intent(this, NavigationBar.class);
+                    //.putExtra("fragment", "ProfileFragment");
+            startActivity(intentToProfileList);
+           // finish();
         });
 
-        notificationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            Toast.makeText(this, isChecked ? "알림 활성화됨" : "알림 비활성화됨", Toast.LENGTH_SHORT).show();
-        });
+//        notificationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+//            Toast.makeText(this, isChecked ? "알림 활성화됨" : "알림 비활성화됨", Toast.LENGTH_SHORT).show();
+//        });
 
         manageAccountButton.setOnClickListener(v -> {
             Intent intent = new Intent(SettingsActivity.this, AccountManagementActivity.class);
