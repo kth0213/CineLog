@@ -24,7 +24,6 @@
         android:layout_height="20dp"
         android:layout_marginStart="332dp"
         android:layout_marginTop="44dp"
-        android:text="24.12.5 17:15"
         android:textColor="#FFFFFF"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

@@ -225,11 +225,6 @@ public class kor_Community_log extends AppCompatActivity {
             Comment comment = commentList.get(position);
             holder.commentText.setText(comment.getText());
 
-             Timestamp timestamp1 = comment.getTimestamp();
-             Date commentData = timestamp1.toDate();
-             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM.dd",Locale.getDefault());
-             holder.timestampText.setText(simpleDateFormat.format(commentData));
-
 
 
         }
@@ -245,7 +240,6 @@ public class kor_Community_log extends AppCompatActivity {
             public CommentViewHolder(@NonNull View itemView) {
                 super(itemView);
                 commentText = itemView.findViewById(R.id.comment_context);
-                timestampText = itemView.findViewById(R.id.time_comment);
             }
         }
     }
