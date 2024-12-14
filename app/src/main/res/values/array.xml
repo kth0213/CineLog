@@ -4,7 +4,7 @@
         <item>제목</item>
         <item>감독</item>
     </string-array>
-    <string-array name="rating_options">
+    <string-array name="rating_options" >
         <item>All</item>
         <item>0.5</item>
         <item>1.0</item>
