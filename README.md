@@ -17,3 +17,17 @@ CineLog는 사용자가 영화를 기록하고 의견을 교류할 수 있는 �
 - **개발 환경**: Android Studio
 - **데이터베이스**: FireStore
 - **형상관리**: GitHub
+
+
+![Image](https://github.com/user-attachments/assets/b80afbcd-ce41-4531-9826-044938a61798)
+![Image](https://github.com/user-attachments/assets/8b3ddd2a-f186-4a1a-8974-a6fcafc30637)
+![Image](https://github.com/user-attachments/assets/dddbca8c-315c-4d90-b55b-e45559535b65)
+![Image](https://github.com/user-attachments/assets/9856c4b5-72d2-4706-8c9e-9d12c2af82c6)
+![Image](https://github.com/user-attachments/assets/949366e4-f90b-4f8b-b368-4899d9f4f772)
+![Image](https://github.com/user-attachments/assets/010b729a-dbc6-4c4c-bc29-925321c87ad8)
+![Image](https://github.com/user-attachments/assets/6d42ca81-4f19-4522-99d0-cf4e6c8c81b3)
+![Image](https://github.com/user-attachments/assets/f1b33674-0a6d-4273-ac29-31000e5dc501)
+![Image](https://github.com/user-attachments/assets/dcbf421d-27e9-429a-a6d2-5247efa9806d)
+![Image](https://github.com/user-attachments/assets/bcc58926-f3f9-472c-84c1-71973fe0b792)
+![Image](https://github.com/user-attachments/assets/0ddf5f28-1f1e-4bc8-9ade-80473cd701fb)
+![Image](https://github.com/user-attachments/assets/6417678c-162a-4bcc-9ce4-1fe5930ec076)
